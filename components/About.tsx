@@ -1,0 +1,136 @@
+import { Reveal } from "./Reveal";
+import { Placeholder } from "./Placeholder";
+
+const VALUES = [
+  { icon: "✦", title: "Selección a mano", text: "Cada prenda elegida con cuidado." },
+  { icon: "❀", title: "Estilo femenino", text: "Diseños que realzan tu esencia." },
+  { icon: "✉", title: "Atención cercana", text: "Te asesoramos paso a paso." },
+  { icon: "✓", title: "Calidad premium", text: "Telas y acabados cuidados." },
+];
+
+export function About() {
+  return (
+    <section id="nosotras" className="section">
+      <div className="container-x">
+        <div
+          className="about-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: ".95fr 1.05fr",
+            gap: "clamp(34px,5vw,80px)",
+            alignItems: "center",
+          }}
+        >
+          <Reveal>
+            <div style={{ position: "relative" }}>
+              <div style={{ position: "absolute", inset: -14, borderRadius: 22, border: "1px solid rgba(198,167,107,.32)" }} />
+              <div style={{ borderRadius: 16, overflow: "hidden" }}>
+                <Placeholder ratio="4 / 5" rounded={0} label="Foto editorial — equipo / atelier" />
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  right: -22,
+                  bottom: -22,
+                  width: 118,
+                  height: 118,
+                  borderRadius: "50%",
+                  background: "#0e0b07",
+                  border: "1px solid rgba(198,167,107,.55)",
+                  display: "grid",
+                  placeItems: "center",
+                  textAlign: "center",
+                  color: "#c6a76b",
+                  animation: "se-float 7s ease-in-out infinite",
+                }}
+              >
+                <div>
+                  <div style={{ fontFamily: "'Pinyon Script', cursive", fontSize: 30, color: "#c6a76b" }}>Sol</div>
+                  <div style={{ fontSize: 9.5, letterSpacing: 3, textTransform: "uppercase", color: "#c6a76b" }}>
+                    Elegance
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          <div>
+            <Reveal>
+              <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#c6a76b" }}>
+                Nuestra historia
+              </div>
+            </Reveal>
+            <Reveal delay={80}>
+              <h2
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontWeight: 500,
+                  fontSize: "clamp(36px,5vw,62px)",
+                  color: "#f4ece0",
+                  margin: "14px 0 22px",
+                  lineHeight: 1.05,
+                }}
+              >
+                Moda con <em style={{ fontStyle: "italic", color: "#c6a76b" }}>alma femenina</em>
+              </h2>
+            </Reveal>
+            <Reveal delay={140}>
+              <p style={{ color: "#c4b69d", fontSize: 15, lineHeight: 1.8 }}>
+                Somos una boutique pensada para acompañarte: curamos cada prenda con criterio para que
+                encuentres piezas versátiles, femeninas y con esa chispa que hace única una entrada.
+              </p>
+            </Reveal>
+            <Reveal delay={200}>
+              <p style={{ color: "#bcae94", fontSize: 14.5, lineHeight: 1.8, marginTop: 14 }}>
+                Creemos en la atención cercana y en vestir mujeres reales — la elegancia es para todas, todos los días.
+              </p>
+            </Reveal>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gap: 22,
+                marginTop: 32,
+              }}
+            >
+              {VALUES.map((v, i) => (
+                <Reveal key={v.title} delay={240 + i * 60}>
+                  <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                    <div
+                      style={{
+                        flex: "0 0 auto",
+                        width: 40,
+                        height: 40,
+                        borderRadius: "50%",
+                        display: "grid",
+                        placeItems: "center",
+                        color: "#c6a76b",
+                        background: "rgba(198,167,107,.08)",
+                        border: "1px solid rgba(198,167,107,.3)",
+                      }}
+                    >
+                      {v.icon}
+                    </div>
+                    <div>
+                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "#f4ece0" }}>
+                        {v.title}
+                      </div>
+                      <div style={{ color: "#9c8d74", fontSize: 13, lineHeight: 1.6, marginTop: 4 }}>{v.text}</div>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        @media (max-width: 860px) {
+          .about-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </section>
+  );
+}
