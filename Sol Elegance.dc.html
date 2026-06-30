@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#14100b;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  ::selection{background:#c6a76b;color:#14100b}
+  image-slot{display:block}
+  @keyframes se-spin{to{transform:rotate(360deg)}}
+  @keyframes se-spinR{to{transform:rotate(-360deg)}}
+  @keyframes se-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  @keyframes se-fadeUp{0%{opacity:0;transform:translateY(40px)}100%{opacity:1;transform:none}}
+  @keyframes se-fadeIn{0%{opacity:0}100%{opacity:1}}
+  @keyframes se-marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @keyframes se-shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+  @keyframes se-pulse{0%,100%{box-shadow:0 0 0 0 rgba(46,160,90,.5)}50%{box-shadow:0 0 0 16px rgba(46,160,90,0)}}
+  @keyframes se-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+  @keyframes se-glow{0%,100%{opacity:.78;filter:blur(7px)}50%{opacity:1;filter:blur(11px)}}
+</style>
+</helmet>
+<div ref="{{ root }}" style="background:#14100b;color:#f4ece0;font-family:'Jost',sans-serif;overflow-x:hidden;min-height:100vh">
+
+  <!-- ANNOUNCEMENT MARQUEE -->
+  <div style="background:#0e0b07;border-bottom:1px solid rgba(198,167,107,.18);overflow:hidden;white-space:nowrap;position:relative;z-index:60">
+    <div style="display:inline-flex;gap:60px;padding:9px 30px;animation:se-marquee 28s linear infinite;will-change:transform">
+      <span style="font-size:11.5px;letter-spacing:3.5px;color:#c6a76b;text-transform:uppercase">✦ Moda Femenina ✦ Envíos a todo el país ✦ Nueva colección ✦ Atención personalizada por WhatsApp ✦ Moda Femenina ✦ Envíos a todo el país ✦ Nueva colección ✦ Atención personalizada por WhatsApp ✦</span>
+      <span style="font-size:11.5px;letter-spacing:3.5px;color:#c6a76b;text-transform:uppercase" aria-hidden="true">✦ Moda Femenina ✦ Envíos a todo el país ✦ Nueva colección ✦ Atención personalizada por WhatsApp ✦ Moda Femenina ✦ Envíos a todo el país ✦ Nueva colección ✦ Atención personalizada por WhatsApp ✦</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(20px,5vw,64px);transition:background .4s ease,box-shadow .4s ease,border-color .4s ease;background:{{ navBg }};border-bottom:1px solid {{ navBorder }};backdrop-filter:{{ navBlur }};-webkit-backdrop-filter:{{ navBlur }}">
+    <a href="#inicio" style="display:flex;align-items:center;gap:13px;text-decoration:none">
+      <img src="sol-elegance-logo.png" alt="Sol Elegance" style="width:42px;height:42px;border-radius:50%;border:1px solid rgba(198,167,107,.5);object-fit:cover">
+      <span style="display:flex;flex-direction:column;line-height:1">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:#f4ece0;letter-spacing:.5px">Sol Elegance</span>
+        <span style="font-size:8.5px;letter-spacing:4px;color:#c6a76b;text-transform:uppercase;margin-top:3px">Moda Femenina</span>
+      </span>
+    </a>
+    <div style="display:flex;align-items:center;gap:clamp(14px,2.4vw,34px)">
+      <sc-for list="{{ navLinks }}" as="lk" hint-placeholder-count="5">
+        <a href="{{ lk.href }}" style="text-decoration:none;color:#d8cbb4;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;font-weight:400;transition:color .3s;padding:6px 0" style-hover="color:#c6a76b">{{ lk.label }}</a>
+      </sc-for>
+      <a href="{{ waMain }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#caa86a,#e7d2a3);color:#1a1308;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;padding:11px 20px;border-radius:40px;text-decoration:none;transition:transform .3s,box-shadow .3s;box-shadow:0 8px 24px -10px rgba(198,167,107,.7)" style-hover="transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(198,167,107,.9)">WhatsApp</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="inicio" style="position:relative;min-height:100vh;display:flex;align-items:center;padding:120px clamp(20px,5vw,64px) 60px;overflow:hidden">
+    <div style="position:absolute;inset:0;background:radial-gradient(120% 90% at 78% 14%,rgba(74,54,28,.5),transparent 58%),radial-gradient(90% 80% at 12% 92%,rgba(45,33,18,.6),transparent 55%),#14100b;z-index:0"></div>
+
+    <!-- 3D SUN -->
+    <div style="position:absolute;top:clamp(-180px,-14vw,-110px);right:clamp(-120px,-7vw,-60px);width:clamp(360px,42vw,580px);height:clamp(360px,42vw,580px);z-index:1;pointer-events:none">
+      <div style="position:absolute;inset:-14%;background:repeating-conic-gradient(from 0deg,rgba(231,196,120,.18) 0deg 1.3deg,transparent 1.3deg 9deg);border-radius:50%;-webkit-mask:radial-gradient(closest-side,transparent 30%,#000 43%,#000 72%,transparent 94%);mask:radial-gradient(closest-side,transparent 30%,#000 43%,#000 72%,transparent 94%);animation:se-spin 95s linear infinite"></div>
+      <div style="position:absolute;inset:2%;background:repeating-conic-gradient(from 5deg,rgba(255,226,160,.26) 0deg 2.4deg,transparent 2.4deg 14deg);border-radius:50%;-webkit-mask:radial-gradient(closest-side,transparent 33%,#000 44%,transparent 66%);mask:radial-gradient(closest-side,transparent 33%,#000 44%,transparent 66%);animation:se-spinR 58s linear infinite"></div>
+      <div style="position:absolute;inset:23%;border-radius:50%;background:radial-gradient(circle,rgba(247,206,118,.55),rgba(202,154,74,.22) 52%,transparent 72%);animation:se-glow 5.5s ease-in-out infinite"></div>
+      <div style="position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle at 36% 30%,#fff7e6 0%,#f7dda2 15%,#ecc179 38%,#d49f54 62%,#9c6a31 100%);box-shadow:inset -18px -22px 50px rgba(72,40,12,.78),inset 14px 16px 38px rgba(255,244,212,.6),0 0 54px 8px rgba(235,191,116,.55),0 0 130px 34px rgba(198,150,70,.32);animation:se-breathe 7s ease-in-out infinite"></div>
+      <div style="position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle at 33% 25%,rgba(255,255,255,.9) 0%,rgba(255,255,255,0) 24%);mix-blend-mode:screen"></div>
+    </div>
+
+    <div style="position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,70px);align-items:center;max-width:1280px;margin:0 auto;width:100%">
+      <div style="min-width:0">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;animation:se-fadeIn 1s both">
+          <span style="height:1px;width:52px;background:linear-gradient(90deg,transparent,#c6a76b)"></span>
+          <span style="font-size:11px;letter-spacing:5px;color:#c6a76b;text-transform:uppercase">Boutique de moda femenina</span>
+        </div>
+        <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(46px,7vw,92px);line-height:.98;color:#f6efe2;letter-spacing:-.5px;margin-bottom:8px;animation:se-fadeUp 1s .05s both">Viste la luz<br>de tu <span style="font-style:italic;background:linear-gradient(100deg,#c6a76b,#f0dcab,#c6a76b);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:se-shimmer 5s linear infinite">elegancia</span></h1>
+        <p style="font-family:'Pinyon Script',cursive;font-size:clamp(30px,4.4vw,52px);color:#c6a76b;line-height:1;margin:4px 0 24px;animation:se-fadeUp 1s .12s both">Sol Elegance</p>
+        <p style="max-width:430px;font-size:16px;line-height:1.75;color:#c4b69d;margin-bottom:38px;animation:se-fadeUp 1s .2s both">Prendas seleccionadas para la mujer que se siente segura en su propia piel. Diseños femeninos, atemporales y llenos de detalle.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;animation:se-fadeUp 1s .28s both">
+          <a href="#catalogo" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#caa86a,#e7d2a3);color:#1a1308;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:600;padding:16px 32px;border-radius:44px;text-decoration:none;transition:transform .35s,box-shadow .35s;box-shadow:0 14px 34px -12px rgba(198,167,107,.8)" style-hover="transform:translateY(-3px);box-shadow:0 20px 44px -12px rgba(198,167,107,1)">Ver catálogo →</a>
+          <a href="#categorias" style="display:inline-flex;align-items:center;gap:10px;color:#e8dcc6;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:500;padding:16px 30px;border-radius:44px;text-decoration:none;border:1px solid rgba(198,167,107,.4);transition:background .35s,border-color .35s" style-hover="background:rgba(198,167,107,.1);border-color:#c6a76b">Explorar categorías</a>
+        </div>
+        <div style="display:flex;gap:40px;margin-top:48px;animation:se-fadeUp 1s .36s both">
+          <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:#f4ece0;font-weight:600">+200</div><div style="font-size:10.5px;letter-spacing:2.5px;color:#9c8d74;text-transform:uppercase;margin-top:2px">Clientas felices</div></div>
+          <div style="width:1px;background:rgba(198,167,107,.25)"></div>
+          <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:#f4ece0;font-weight:600">100%</div><div style="font-size:10.5px;letter-spacing:2.5px;color:#9c8d74;text-transform:uppercase;margin-top:2px">Moda femenina</div></div>
+          <div style="width:1px;background:rgba(198,167,107,.25)"></div>
+          <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:#f4ece0;font-weight:600">24/7</div><div style="font-size:10.5px;letter-spacing:2.5px;color:#9c8d74;text-transform:uppercase;margin-top:2px">Atención online</div></div>
+        </div>
+      </div>
+
+      <div style="position:relative;min-width:0;animation:se-fadeUp 1.1s .2s both">
+        <div style="position:absolute;inset:-14px;border:1px solid rgba(198,167,107,.4);border-radius:200px 200px 22px 22px;z-index:1;pointer-events:none"></div>
+        <div style="position:relative;border-radius:190px 190px 16px 16px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.8);z-index:2">
+          <image-slot id="hero-main" style="width:100%;aspect-ratio:3/4" shape="rect" placeholder="Arrastra una foto de portada" fit="cover"></image-slot>
+        </div>
+        <div style="position:absolute;bottom:-26px;left:-30px;background:rgba(20,16,11,.85);backdrop-filter:blur(8px);border:1px solid rgba(198,167,107,.35);border-radius:14px;padding:14px 20px;z-index:3;display:flex;align-items:center;gap:12px;animation:se-float 6s ease-in-out infinite;box-shadow:0 20px 40px -20px rgba(0,0,0,.7)">
+          <img src="sol-elegance-logo.png" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid rgba(198,167,107,.4)">
+          <div><div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:#f4ece0;line-height:1">Nueva temporada</div><div style="font-size:10px;letter-spacing:2px;color:#c6a76b;text-transform:uppercase;margin-top:3px">Recién llegado</div></div>
+        </div>
+      </div>
+    </div>
+
+    <a href="#categorias" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:#9c8d74;animation:se-fadeIn 1.4s 1s both">
+      <span style="font-size:9.5px;letter-spacing:3px;text-transform:uppercase">Desliza</span>
+      <span style="width:1px;height:38px;background:linear-gradient(#c6a76b,transparent);animation:se-float 2.4s ease-in-out infinite"></span>
+    </a>
+  </header>
+
+  <!-- ROTATING WORD STRIP -->
+  <div style="background:#0e0b07;border-top:1px solid rgba(198,167,107,.16);border-bottom:1px solid rgba(198,167,107,.16);overflow:hidden;white-space:nowrap;padding:18px 0">
+    <div style="display:inline-flex;animation:se-marquee 30s linear infinite;will-change:transform">
+      <span style="display:inline-flex;align-items:center;gap:46px;padding-right:46px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:rgba(198,167,107,.34)">Vestidos<span style="color:#c6a76b">✦</span>Blusas<span style="color:#c6a76b">✦</span>Conjuntos<span style="color:#c6a76b">✦</span>Pantalones<span style="color:#c6a76b">✦</span>Faldas<span style="color:#c6a76b">✦</span>Accesorios<span style="color:#c6a76b">✦</span></span>
+      <span style="display:inline-flex;align-items:center;gap:46px;padding-right:46px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:rgba(198,167,107,.34)" aria-hidden="true">Vestidos<span style="color:#c6a76b">✦</span>Blusas<span style="color:#c6a76b">✦</span>Conjuntos<span style="color:#c6a76b">✦</span>Pantalones<span style="color:#c6a76b">✦</span>Faldas<span style="color:#c6a76b">✦</span>Accesorios<span style="color:#c6a76b">✦</span></span>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section id="categorias" style="padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);max-width:1320px;margin:0 auto">
+    <div data-reveal style="text-align:center;margin-bottom:clamp(40px,5vw,68px)">
+      <span style="font-size:11px;letter-spacing:5px;color:#c6a76b;text-transform:uppercase">Encuentra tu estilo</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(38px,5.5vw,68px);color:#f4ece0;line-height:1.02;margin-top:14px">Categorías</h2>
+      <p style="max-width:520px;margin:16px auto 0;color:#b1a288;font-size:15.5px;line-height:1.7">Explora nuestra selección por tipo de prenda y descubre piezas pensadas para cada momento.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(16px,2vw,26px)">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="6">
+        <a href="#catalogo" onClick="{{ c.onClick }}" data-reveal data-reveal-delay="{{ c.delay }}" style="position:relative;display:block;text-decoration:none;border-radius:18px;overflow:hidden;border:1px solid rgba(198,167,107,.2);background:#1c1710;aspect-ratio:4/5;transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s,border-color .5s" style-hover="transform:translateY(-8px);box-shadow:0 30px 60px -28px rgba(0,0,0,.85);border-color:rgba(198,167,107,.55)">
+          <div style="position:absolute;inset:0;overflow:hidden">
+            <image-slot id="{{ c.slot }}" style="width:100%;height:100%;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.09)" shape="rect" placeholder="{{ c.name }}" fit="cover"></image-slot>
+          </div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,11,7,.05) 30%,rgba(14,11,7,.55) 68%,rgba(14,11,7,.92));pointer-events:none"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;padding:22px;pointer-events:none">
+            <div style="font-size:10px;letter-spacing:3px;color:#c6a76b;text-transform:uppercase;margin-bottom:6px">{{ c.tag }}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#f6efe2;font-weight:500">{{ c.name }}</span>
+              <span style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(198,167,107,.6);display:flex;align-items:center;justify-content:center;color:#c6a76b;font-size:15px">→</span>
+            </div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <section id="catalogo" style="padding:clamp(70px,8vw,120px) clamp(20px,5vw,64px);background:linear-gradient(180deg,#14100b,#100c08 50%,#14100b)">
+    <div style="max-width:1320px;margin:0 auto">
+      <div data-reveal style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:34px">
+        <div>
+          <span style="font-size:11px;letter-spacing:5px;color:#c6a76b;text-transform:uppercase">Nuestra selección</span>
+          <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(38px,5.5vw,68px);color:#f4ece0;line-height:1.02;margin-top:12px">El catálogo</h2>
+        </div>
+        <p style="max-width:340px;color:#a99a80;font-size:14.5px;line-height:1.7">Toca una prenda y escríbenos por WhatsApp para consultar tallas y disponibilidad.</p>
+      </div>
+
+      <div data-reveal style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px">
+        <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="6">
+          <button onClick="{{ ch.onClick }}" style="{{ ch.style }}">{{ ch.label }}</button>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:clamp(16px,2vw,28px)">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="8">
+          <article data-reveal style="display:{{ p.display }};flex-direction:column;border-radius:16px;overflow:hidden;background:#1c1710;border:1px solid rgba(198,167,107,.18);transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s,border-color .5s" style-hover="transform:translateY(-8px);box-shadow:0 32px 64px -30px rgba(0,0,0,.9);border-color:rgba(198,167,107,.5)">
+            <div style="position:relative;overflow:hidden;aspect-ratio:3/4">
+              <image-slot id="{{ p.slotId }}" style="width:100%;height:100%;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.07)" shape="rect" placeholder="{{ p.name }}" fit="cover"></image-slot>
+              <span style="position:absolute;top:12px;left:12px;background:rgba(14,11,7,.78);backdrop-filter:blur(6px);color:#c6a76b;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;border-radius:30px;border:1px solid rgba(198,167,107,.3)">{{ p.catLabel }}</span>
+            </div>
+            <div style="padding:18px 18px 20px;display:flex;flex-direction:column;gap:14px;flex:1">
+              <div>
+                <h3 style="font-family:'Cormorant Garamond',serif;font-size:23px;color:#f4ece0;font-weight:500;line-height:1.1">{{ p.name }}</h3>
+                <p style="font-size:12.5px;color:#9c8d74;margin-top:4px;line-height:1.5">{{ p.desc }}</p>
+              </div>
+              <a href="{{ p.wa }}" target="_blank" rel="noopener" style="margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;color:#c6a76b;border:1px solid rgba(198,167,107,.4);border-radius:34px;padding:11px 16px;text-decoration:none;transition:background .35s,color .35s,border-color .35s" style-hover="background:linear-gradient(135deg,#caa86a,#e7d2a3);color:#1a1308;border-color:transparent">Consultar por WhatsApp</a>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITORIAL BANNER -->
+  <section data-reveal style="position:relative;min-height:520px;display:flex;align-items:center;overflow:hidden">
+    <image-slot id="editorial" style="position:absolute;inset:0;width:100%;height:100%" shape="rect" placeholder="Arrastra una foto editorial de fondo" fit="cover"></image-slot>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,11,7,.92) 30%,rgba(14,11,7,.45) 74%,rgba(14,11,7,.2));z-index:1"></div>
+    <div style="position:relative;z-index:2;padding:clamp(50px,8vw,100px) clamp(20px,5vw,64px);max-width:1320px;margin:0 auto;width:100%">
+      <div style="max-width:540px">
+        <span style="font-size:11px;letter-spacing:5px;color:#c6a76b;text-transform:uppercase">Colección destacada</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(40px,6vw,76px);color:#f6efe2;line-height:1.02;margin:16px 0 18px">Detalles que <span style="font-style:italic;color:#c6a76b">enamoran</span></h2>
+        <p style="color:#c4b69d;font-size:16px;line-height:1.75;margin-bottom:30px">Cada prenda está elegida a mano pensando en la mujer que la va a lucir. Texturas suaves, cortes favorecedores y una estética que se siente premium.</p>
+        <a href="#catalogo" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#caa86a,#e7d2a3);color:#1a1308;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:600;padding:15px 30px;border-radius:44px;text-decoration:none;transition:transform .35s,box-shadow .35s;box-shadow:0 14px 34px -12px rgba(198,167,107,.8)" style-hover="transform:translateY(-3px);box-shadow:0 20px 44px -12px rgba(198,167,107,1)">Descubre la colección →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="nosotras" style="padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);max-width:1280px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(34px,5vw,80px);align-items:center">
+      <div data-reveal style="position:relative">
+        <div style="position:absolute;inset:-14px -14px 28px 28px;border:1px solid rgba(198,167,107,.4);border-radius:18px;z-index:0;pointer-events:none"></div>
+        <div style="position:relative;border-radius:16px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.8);z-index:1">
+          <image-slot id="about" style="width:100%;aspect-ratio:4/5" shape="rect" placeholder="Arrastra una foto de la marca" fit="cover"></image-slot>
+        </div>
+        <div style="position:absolute;bottom:-22px;right:-18px;z-index:2;background:#0e0b07;border:1px solid rgba(198,167,107,.35);border-radius:50%;width:118px;height:118px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;animation:se-float 7s ease-in-out infinite;box-shadow:0 20px 40px -18px rgba(0,0,0,.8)">
+          <span style="font-family:'Pinyon Script',cursive;font-size:30px;color:#c6a76b;line-height:.8">Sol</span>
+          <span style="font-size:8px;letter-spacing:3px;color:#9c8d74;text-transform:uppercase;margin-top:4px">Elegance</span>
+        </div>
+      </div>
+      <div data-reveal data-reveal-delay="120">
+        <span style="font-size:11px;letter-spacing:5px;color:#c6a76b;text-transform:uppercase">Nuestra historia</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(38px,5vw,64px);color:#f4ece0;line-height:1.04;margin:14px 0 22px">Moda con<br>alma femenina</h2>
+        <p style="color:#bcae94;font-size:16px;line-height:1.8;margin-bottom:18px">Sol Elegance nació del amor por la moda femenina y por hacer sentir especial a cada mujer. Seleccionamos prendas que combinan elegancia, comodidad y un toque único.</p>
+        <p style="color:#9c8d74;font-size:15px;line-height:1.8;margin-bottom:32px">Más que una tienda, somos un espacio donde cada clienta encuentra piezas que reflejan su luz propia. Atención cercana, personalizada y pensada para ti.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+          <sc-for list="{{ values }}" as="v" hint-placeholder-count="4">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <span style="color:#c6a76b;font-size:20px;line-height:1">{{ v.icon }}</span>
+              <div><div style="color:#f4ece0;font-family:'Cormorant Garamond',serif;font-size:19px">{{ v.title }}</div><div style="color:#9c8d74;font-size:12.5px;line-height:1.5;margin-top:2px">{{ v.text }}</div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contacto" style="position:relative;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);overflow:hidden">
+    <div style="position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:min(80vw,900px);height:min(80vw,900px);background:repeating-conic-gradient(from 0deg,rgba(198,167,107,.07) 0deg 3deg,transparent 3deg 11deg);border-radius:50%;-webkit-mask:radial-gradient(closest-side,transparent 20%,#000 34%,#000 58%,transparent 76%);mask:radial-gradient(closest-side,transparent 20%,#000 34%,#000 58%,transparent 76%);animation:se-spinR 120s linear infinite;z-index:0"></div>
+    <div data-reveal style="position:relative;z-index:1;max-width:760px;margin:0 auto;text-align:center">
+      <img src="sol-elegance-logo.png" alt="Sol Elegance" style="width:84px;height:84px;border-radius:50%;border:1px solid rgba(198,167,107,.5);object-fit:cover;margin-bottom:24px">
+      <span style="display:block;font-size:11px;letter-spacing:5px;color:#c6a76b;text-transform:uppercase">Hablemos</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(40px,6vw,76px);color:#f6efe2;line-height:1.04;margin:14px 0 18px">¿Lista para brillar?</h2>
+      <p style="color:#bcae94;font-size:16.5px;line-height:1.75;max-width:500px;margin:0 auto 38px">Escríbenos por WhatsApp y te asesoramos en todo: tallas, combinaciones y novedades. Tu próxima prenda favorita te espera.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:46px">
+        <a href="{{ waMain }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;background:linear-gradient(135deg,#caa86a,#e7d2a3);color:#1a1308;font-size:13.5px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;padding:17px 34px;border-radius:46px;text-decoration:none;transition:transform .35s,box-shadow .35s;box-shadow:0 16px 38px -12px rgba(198,167,107,.85)" style-hover="transform:translateY(-3px);box-shadow:0 24px 50px -12px rgba(198,167,107,1)">Escribir por WhatsApp</a>
+        <a href="https://www.instagram.com/soleleganceboutique" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;color:#e8dcc6;font-size:13.5px;letter-spacing:1.6px;text-transform:uppercase;font-weight:500;padding:17px 32px;border-radius:46px;text-decoration:none;border:1px solid rgba(198,167,107,.4);transition:background .35s,border-color .35s" style-hover="background:rgba(198,167,107,.1);border-color:#c6a76b">Síguenos en Instagram</a>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
+        <sc-for list="{{ contacts }}" as="ct" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:10px;background:rgba(28,23,16,.7);border:1px solid rgba(198,167,107,.2);border-radius:14px;padding:14px 20px">
+            <span style="color:#c6a76b;font-size:17px">{{ ct.icon }}</span>
+            <div style="text-align:left"><div style="font-size:9.5px;letter-spacing:2px;color:#9c8d74;text-transform:uppercase">{{ ct.label }}</div><div style="font-size:14px;color:#e8dcc6;margin-top:2px">{{ ct.value }}</div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid rgba(198,167,107,.18);background:#0e0b07;padding:clamp(46px,6vw,72px) clamp(20px,5vw,64px) 34px">
+    <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;justify-content:space-between">
+      <div style="max-width:320px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px">
+          <img src="sol-elegance-logo.png" alt="" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:1px solid rgba(198,167,107,.4)">
+          <div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#f4ece0;font-weight:600">Sol Elegance</div><div style="font-size:8.5px;letter-spacing:4px;color:#c6a76b;text-transform:uppercase;margin-top:2px">Moda Femenina</div></div>
+        </div>
+        <p style="color:#8a7c64;font-size:13.5px;line-height:1.7">Moda femenina pensada para realzar tu luz propia. Calidad, elegancia y atención cercana en cada prenda.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:10px;letter-spacing:3px;color:#c6a76b;text-transform:uppercase;margin-bottom:4px">Navegación</div>
+        <sc-for list="{{ navLinks }}" as="lk" hint-placeholder-count="5">
+          <a href="{{ lk.href }}" style="color:#b1a288;font-size:14px;text-decoration:none;transition:color .3s" style-hover="color:#f4ece0">{{ lk.label }}</a>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:10px;letter-spacing:3px;color:#c6a76b;text-transform:uppercase;margin-bottom:4px">Síguenos</div>
+        <a href="https://www.instagram.com/soleleganceboutique" target="_blank" rel="noopener" style="color:#b1a288;font-size:14px;text-decoration:none;transition:color .3s" style-hover="color:#f4ece0">Instagram</a>
+        <a href="{{ waMain }}" target="_blank" rel="noopener" style="color:#b1a288;font-size:14px;text-decoration:none;transition:color .3s" style-hover="color:#f4ece0">WhatsApp</a>
+        <span style="color:#8a7c64;font-size:14px">+595 982 314033</span>
+      </div>
+    </div>
+    <div style="max-width:1280px;margin:36px auto 0;padding-top:22px;border-top:1px solid rgba(198,167,107,.12);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center">
+      <span style="color:#7a6e58;font-size:12px;letter-spacing:.5px">© 2026 Sol Elegance · Moda Femenina</span>
+      <span style="color:#7a6e58;font-size:12px;letter-spacing:.5px">Hecho con <span style="color:#c6a76b">♥</span> para realzar tu elegancia</span>
+    </div>
+  </footer>
+
+  <!-- FLOATING WHATSAPP -->
+  <sc-if value="{{ floatingWhatsApp }}" hint-placeholder-val="{{ true }}">
+    <a href="{{ waMain }}" target="_blank" rel="noopener" aria-label="WhatsApp" style="position:fixed;right:22px;bottom:22px;z-index:80;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c4b);display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 12px 30px -8px rgba(18,140,75,.8);animation:se-pulse 2.6s ease-out infinite;transition:transform .3s" style-hover="transform:scale(1.08)">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    </a>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;floatingWhatsApp&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Opciones&quot;},&quot;revealOn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Opciones&quot;}}">
+class Component extends DCLogic {
+  state = { scrolled: false, filter: 'todos' };
+  root = React.createRef();
+
+  navLinks = [
+    { label: 'Inicio', href: '#inicio' },
+    { label: 'Categorías', href: '#categorias' },
+    { label: 'Catálogo', href: '#catalogo' },
+    { label: 'Nosotras', href: '#nosotras' },
+    { label: 'Contacto', href: '#contacto' },
+  ];
+
+  catData = [
+    { name: 'Vestidos', tag: 'Elegancia diaria', slot: 'cat-vestidos', value: 'Vestidos' },
+    { name: 'Blusas', tag: 'Suaves y versátiles', slot: 'cat-blusas', value: 'Blusas' },
+    { name: 'Conjuntos', tag: 'Look completo', slot: 'cat-conjuntos', value: 'Conjuntos' },
+    { name: 'Pantalones', tag: 'Comodidad con estilo', slot: 'cat-pantalones', value: 'Pantalones' },
+    { name: 'Faldas', tag: 'Movimiento y gracia', slot: 'cat-faldas', value: 'Faldas' },
+    { name: 'Accesorios', tag: 'El detalle final', slot: 'cat-accesorios', value: 'todos' },
+  ];
+
+  filterDefs = [
+    { label: 'Todos', value: 'todos' },
+    { label: 'Vestidos', value: 'Vestidos' },
+    { label: 'Blusas', value: 'Blusas' },
+    { label: 'Conjuntos', value: 'Conjuntos' },
+    { label: 'Pantalones', value: 'Pantalones' },
+    { label: 'Faldas', value: 'Faldas' },
+  ];
+
+  productData = [
+    { name: 'Vestido Aurora', cat: 'Vestidos', desc: 'Vestido midi de caída fluida' },
+    { name: 'Vestido Solsticio', cat: 'Vestidos', desc: 'Estampado suave, corte favorecedor' },
+    { name: 'Vestido Noche', cat: 'Vestidos', desc: 'Elegancia para ocasiones especiales' },
+    { name: 'Blusa Marfil', cat: 'Blusas', desc: 'Tejido ligero y versátil' },
+    { name: 'Blusa Seda', cat: 'Blusas', desc: 'Brillo sutil, tacto suave' },
+    { name: 'Blusa Lazo', cat: 'Blusas', desc: 'Detalle de lazo femenino' },
+    { name: 'Conjunto Dorado', cat: 'Conjuntos', desc: 'Top y pantalón a juego' },
+    { name: 'Conjunto Verano', cat: 'Conjuntos', desc: 'Frescura con estilo' },
+    { name: 'Set Elegance', cat: 'Conjuntos', desc: 'Look completo de pies a cabeza' },
+    { name: 'Pantalón Lino', cat: 'Pantalones', desc: 'Comodidad premium en lino' },
+    { name: 'Falda Brisa', cat: 'Faldas', desc: 'Vuelo y movimiento' },
+    { name: 'Falda Midi', cat: 'Faldas', desc: 'Silueta estilizada' },
+  ];
+
+  values = [
+    { icon: '✦', title: 'Selección a mano', text: 'Cada prenda elegida con cuidado.' },
+    { icon: '❀', title: 'Estilo femenino', text: 'Diseños que realzan tu esencia.' },
+    { icon: '✉', title: 'Atención cercana', text: 'Te asesoramos paso a paso.' },
+    { icon: '✓', title: 'Calidad premium', text: 'Telas y acabados cuidados.' },
+  ];
+
+  contacts = [
+    { icon: '✆', label: 'WhatsApp', value: '+595 982 314033' },
+    { icon: '❤', label: 'Instagram', value: '@soleleganceboutique' },
+    { icon: '✦', label: 'Envíos', value: 'A todo el país' },
+  ];
+
+  componentDidMount() {
+    this._onScroll = () => {
+      const s = window.scrollY > 30;
+      if (s !== this.state.scrolled) this.setState({ scrolled: s });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+
+    const revealOn = this.props.revealOn ?? true;
+    const root = this.root.current;
+    if (!root) return;
+    const els = root.querySelectorAll('[data-reveal]');
+    if (!revealOn) { els.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; }); return; }
+    els.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(34px)';
+      el.style.transition = 'opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1)';
+      const d = el.getAttribute('data-reveal-delay');
+      if (d) el.style.transitionDelay = d + 'ms';
+    });
+    this._io = new IntersectionObserver((ents) => {
+      ents.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          this._io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(el => this._io.observe(el));
+  }
+
+  componentWillUnmount() {
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+    if (this._io) this._io.disconnect();
+  }
+
+  renderVals() {
+    const scrolled = this.state.scrolled;
+    const filter = this.state.filter;
+    const wa = (txt) => 'https://wa.me/595982314033?text=' + encodeURIComponent(txt);
+    const waMain = wa('Hola Sol Elegance ✨ me gustaría conocer más sobre sus prendas.');
+
+    const products = this.productData.map((p, i) => ({
+      ...p,
+      slotId: 'prod-' + (i + 1),
+      catLabel: p.cat,
+      display: (filter === 'todos' || p.cat === filter) ? 'flex' : 'none',
+      wa: wa('Hola Sol Elegance ✨ me interesa la prenda "' + p.name + '". ¿Me das más info?'),
+    }));
+
+    const cats = this.catData.map((c, i) => ({
+      ...c,
+      delay: String(i * 70),
+      onClick: () => this.setState({ filter: c.value }),
+    }));
+
+    const chipBase = "cursor:pointer;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:1.8px;text-transform:uppercase;font-weight:500;padding:11px 22px;border-radius:40px;transition:all .3s;";
+    const chips = this.filterDefs.map(f => ({
+      label: f.label,
+      onClick: () => this.setState({ filter: f.value }),
+      style: chipBase + (filter === f.value
+        ? 'background:linear-gradient(135deg,#caa86a,#e7d2a3);color:#1a1308;border:1px solid transparent;box-shadow:0 8px 22px -10px rgba(198,167,107,.8);'
+        : 'background:transparent;color:#c6a76b;border:1px solid rgba(198,167,107,.35);'),
+    }));
+
+    return {
+      root: this.root,
+      navLinks: this.navLinks,
+      values: this.values,
+      contacts: this.contacts,
+      cats,
+      chips,
+      products,
+      waMain,
+      floatingWhatsApp: this.props.floatingWhatsApp ?? true,
+      navBg: scrolled ? 'rgba(16,12,8,.9)' : 'transparent',
+      navBorder: scrolled ? 'rgba(198,167,107,.18)' : 'transparent',
+      navBlur: scrolled ? 'blur(14px)' : 'none',
+    };
+  }
+}
+</script>
+</body>
+</html>
