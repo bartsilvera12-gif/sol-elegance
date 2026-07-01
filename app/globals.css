@@ -113,10 +113,10 @@ body {
   .nav-brand-title { font-size: 17px !important; }
 
   /* Categories perchero */
-  .rack-scroller { gap: 18px !important; padding: 0 22px 24px !important; }
+  .rack-rail { padding-left: 22px !important; padding-right: 22px !important; }
+  .rack-rail > div { gap: 18px !important; }
   .rack-item { flex: 0 0 200px !important; }
   .rack-arrow { display: none !important; }
-  .rack-bracket-l, .rack-bracket-r { transform: scale(.85); }
 
   /* Catalog + Categories heading spacing */
   .catalog-head-p { display: none; }
