@@ -41,7 +41,7 @@ export function EditorialBanner() {
             </p>
           </Reveal>
           <Reveal delay={200}>
-            <a href="#catalogo" className="pill-gold pill-gold-lg" style={{ marginTop: 26 }}>
+            <a href="/catalogo" className="pill-gold pill-gold-lg" style={{ marginTop: 26 }}>
               Descubre la colección <span>→</span>
             </a>
           </Reveal>

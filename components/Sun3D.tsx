@@ -1,6 +1,7 @@
 export function Sun3D() {
   return (
     <div
+      className="hero-sun"
       aria-hidden
       style={{
         position: "absolute",

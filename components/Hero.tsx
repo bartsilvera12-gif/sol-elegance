@@ -75,16 +75,17 @@ export function Hero() {
           </Reveal>
           <Reveal delay={260}>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 14, marginTop: 28 }}>
-              <a href="#catalogo" className="pill-gold pill-gold-lg">
+              <a href="/catalogo" className="pill-gold pill-gold-lg">
                 Ver catálogo <span>→</span>
               </a>
-              <a href="#categorias" className="pill-outline">
+              <a href="/categorias" className="pill-outline">
                 Explorar categorías
               </a>
             </div>
           </Reveal>
           <Reveal delay={320}>
             <div
+              className="hero-stats"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3, auto)",
@@ -156,6 +157,7 @@ export function Hero() {
               />
             </div>
             <div
+              className="hero-badge"
               style={{
                 position: "absolute",
                 left: -18,

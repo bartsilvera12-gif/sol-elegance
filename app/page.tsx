@@ -1,4 +1,3 @@
-import { Marquee } from "@/components/Marquee";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { WordStrip } from "@/components/WordStrip";
@@ -12,7 +11,6 @@ import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 export default function Page() {
   return (
     <main>
-      <Marquee />
       <Navbar />
       <Hero />
       <WordStrip />

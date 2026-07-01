@@ -88,3 +88,61 @@ body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* ===================== Adaptive design (mobile) ===================== */
+
+/* Tablet & below */
+@media (max-width: 860px) {
+  .section { padding: clamp(56px, 10vw, 90px) clamp(18px, 5vw, 32px); }
+  .container-x { max-width: 100%; }
+  .pill-gold, .pill-outline { padding: 13px 22px; font-size: 11.5px; letter-spacing: 1.4px; }
+  .pill-gold-lg { padding: 14px 24px; font-size: 12px; }
+
+  .about-grid { grid-template-columns: 1fr !important; }
+  .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+}
+
+/* Phone */
+@media (max-width: 640px) {
+  .section { padding: 48px 16px; }
+
+  /* Navbar: compact cart button (icon only) + smaller brand */
+  .nav-cart { padding: 9px 12px !important; }
+  .nav-cart-label { display: none; }
+  .nav-brand-sub { display: none; }
+  .nav-brand-title { font-size: 17px !important; }
+
+  /* Categories perchero */
+  .rack-scroller { gap: 18px !important; padding: 0 22px 24px !important; }
+  .rack-item { flex: 0 0 200px !important; }
+  .rack-arrow { display: none !important; }
+  .rack-bracket-l, .rack-bracket-r { transform: scale(.85); }
+
+  /* Catalog + Categories heading spacing */
+  .catalog-head-p { display: none; }
+
+  /* Filter chips scroll horizontal without wrapping into 3 lines */
+  .filter-row {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .filter-row > button { flex: 0 0 auto; }
+
+  /* Hero */
+  .hero-sun { transform: scale(.65) translate(15%, -12%); opacity: .85; }
+  .hero-stats { gap: 18px !important; }
+  .hero-stats > div { padding-left: 14px !important; }
+  .hero-badge { left: 0 !important; bottom: 14px !important; padding: 10px 12px !important; }
+
+  /* Footer tighter */
+  footer { padding-top: 44px !important; padding-bottom: 22px !important; }
+}
+
+/* Small phone */
+@media (max-width: 400px) {
+  .rack-item { flex: 0 0 180px !important; }
+  .pill-outline, .pill-gold { padding: 12px 18px; }
+}

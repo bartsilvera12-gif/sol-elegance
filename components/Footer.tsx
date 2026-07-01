@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { NAV_LINKS, WA_MAIN, INSTAGRAM_URL } from "@/lib/data";
+import { NAV_LINKS, WA_MAIN, INSTAGRAM_URL, TECH_PROVIDER } from "@/lib/data";
 
 export function Footer() {
   return (
@@ -100,7 +100,34 @@ export function Footer() {
         }}
       >
         <span>© 2026 Sol Elegance · Moda Femenina</span>
-        <span>Hecho con ♥ para realzar tu elegancia</span>
+        <a
+          href="/privacidad"
+          style={{
+            color: "#c6a76b",
+            textDecoration: "none",
+            letterSpacing: 1.4,
+            borderBottom: "1px solid rgba(198,167,107,.35)",
+            paddingBottom: 2,
+          }}
+        >
+          Política de Privacidad
+        </a>
+        <span>
+          Desarrollado por{" "}
+          <a
+            href={TECH_PROVIDER.website}
+            target="_blank"
+            rel="noopener"
+            style={{
+              color: "#c6a76b",
+              textDecoration: "none",
+              fontWeight: 600,
+              letterSpacing: 1.4,
+            }}
+          >
+            Neura
+          </a>
+        </span>
       </div>
     </footer>
   );

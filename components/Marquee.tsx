@@ -9,7 +9,10 @@ export function Marquee() {
         background: "#0e0b07",
         borderBottom: "1px solid rgba(198,167,107,.18)",
         overflow: "hidden",
-        position: "relative",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
         zIndex: 60,
       }}
     >
