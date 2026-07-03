@@ -18,7 +18,7 @@ export function PageShell({
   return (
     <main>
       <Navbar />
-      {!showHeader && <div style={{ height: 90 }} aria-hidden />}
+      {!showHeader && <div style={{ height: 90, background: "#ffffff" }} aria-hidden />}
       {showHeader && (title || eyebrow) && (
         <header
           style={{

@@ -146,3 +146,58 @@ body {
   .rack-item { flex: 0 0 180px !important; }
   .pill-outline, .pill-gold { padding: 12px 18px; }
 }
+
+/* Vanity / dressing-room lights (focos de vestidor) */
+.vanity-lights {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 3.4vw, 34px);
+  padding: 14px clamp(10px, 4vw, 40px);
+  margin: 0 auto 6px;
+  max-width: 760px;
+}
+/* Fixture bar behind the bulbs */
+.vanity-lights::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 50%;
+  height: 6px;
+  transform: translateY(-50%);
+  border-radius: 6px;
+  background: linear-gradient(180deg, #e7d2a3, #c6a76b 55%, #7a5a2e);
+  box-shadow: 0 2px 5px rgba(0,0,0,.18), 0 1px 0 rgba(255,236,192,.6) inset;
+  z-index: 0;
+}
+.vanity-bulb {
+  position: relative;
+  z-index: 1;
+  width: clamp(14px, 2.4vw, 20px);
+  height: clamp(14px, 2.4vw, 20px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #fffdf5 0%, #ffe9b0 42%, #ffcf7a 100%);
+  box-shadow:
+    0 0 10px 2px rgba(255,205,130,.85),
+    0 0 26px 6px rgba(255,190,110,.55),
+    0 1px 2px rgba(0,0,0,.25) inset;
+  animation: vanityGlow 3.6s ease-in-out infinite;
+}
+@keyframes vanityGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px 2px rgba(255,205,130,.85), 0 0 26px 6px rgba(255,190,110,.55), 0 1px 2px rgba(0,0,0,.25) inset;
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 14px 3px rgba(255,214,150,.95), 0 0 34px 9px rgba(255,198,120,.7), 0 1px 2px rgba(0,0,0,.25) inset;
+    filter: brightness(1.12);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vanity-bulb { animation: none !important; }
+}
+@media (max-width: 640px) {
+  .vanity-lights { gap: 16px; }
+}

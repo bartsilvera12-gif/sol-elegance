@@ -26,7 +26,7 @@ export function Catalog({
     <section
       id="catalogo"
       style={{
-        background: "linear-gradient(180deg, #14100b, #100c08 50%, #14100b)",
+        background: "#ffffff",
         padding: "clamp(70px,9vw,130px) clamp(20px,5vw,64px)",
       }}
     >
@@ -43,7 +43,7 @@ export function Catalog({
             }}
           >
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#c6a76b" }}>
+              <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#9a7328" }}>
                 Selección actual
               </div>
               <h2
@@ -51,14 +51,14 @@ export function Catalog({
                   fontFamily: "'Cormorant Garamond', serif",
                   fontWeight: 500,
                   fontSize: "clamp(38px,5.5vw,68px)",
-                  color: "#f4ece0",
+                  color: "#1a1308",
                   margin: "10px 0 0",
                 }}
               >
                 El catálogo
               </h2>
             </div>
-            <p className="catalog-head-p" style={{ maxWidth: 360, color: "#bcae94", fontSize: 14.5, lineHeight: 1.7 }}>
+            <p className="catalog-head-p" style={{ maxWidth: 360, color: "#6b6253", fontSize: 14.5, lineHeight: 1.7 }}>
               Tocá una prenda para consultar disponibilidad, talles y colores por WhatsApp.
             </p>
           </div>
@@ -89,8 +89,8 @@ export function Catalog({
                         }
                       : {
                           background: "transparent",
-                          color: "#c6a76b",
-                          border: "1px solid rgba(198,167,107,.35)",
+                          color: "#9a7328",
+                          border: "1px solid rgba(154,115,40,.4)",
                         }),
                   }}
                 >

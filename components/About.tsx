@@ -10,7 +10,7 @@ const VALUES = [
 
 export function About() {
   return (
-    <section id="nosotras" className="section">
+    <section id="nosotras" className="section" style={{ background: "#ffffff" }}>
       <div className="container-x">
         <div
           className="about-grid"
@@ -56,7 +56,7 @@ export function About() {
 
           <div>
             <Reveal>
-              <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#c6a76b" }}>
+              <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#9a7328" }}>
                 Nuestra historia
               </div>
             </Reveal>
@@ -66,22 +66,22 @@ export function About() {
                   fontFamily: "'Cormorant Garamond', serif",
                   fontWeight: 500,
                   fontSize: "clamp(36px,5vw,62px)",
-                  color: "#f4ece0",
+                  color: "#1a1308",
                   margin: "14px 0 22px",
                   lineHeight: 1.05,
                 }}
               >
-                Moda con <em style={{ fontStyle: "italic", color: "#c6a76b" }}>alma femenina</em>
+                Moda con <em style={{ fontStyle: "italic", color: "#9a7328" }}>alma femenina</em>
               </h2>
             </Reveal>
             <Reveal delay={140}>
-              <p style={{ color: "#c4b69d", fontSize: 15, lineHeight: 1.8 }}>
+              <p style={{ color: "#4a4235", fontSize: 15, lineHeight: 1.8, fontWeight: 600 }}>
                 Somos una boutique pensada para acompañarte: curamos cada prenda con criterio para que
                 encuentres piezas versátiles, femeninas y con esa chispa que hace única una entrada.
               </p>
             </Reveal>
             <Reveal delay={200}>
-              <p style={{ color: "#bcae94", fontSize: 14.5, lineHeight: 1.8, marginTop: 14 }}>
+              <p style={{ color: "#6b6253", fontSize: 14.5, lineHeight: 1.8, marginTop: 14, fontWeight: 600 }}>
                 Creemos en la atención cercana y en vestir mujeres reales — la elegancia es para todas, todos los días.
               </p>
             </Reveal>
@@ -105,18 +105,18 @@ export function About() {
                         borderRadius: "50%",
                         display: "grid",
                         placeItems: "center",
-                        color: "#c6a76b",
-                        background: "rgba(198,167,107,.08)",
-                        border: "1px solid rgba(198,167,107,.3)",
+                        color: "#9a7328",
+                        background: "rgba(154,115,40,.08)",
+                        border: "1px solid rgba(154,115,40,.35)",
                       }}
                     >
                       {v.icon}
                     </div>
                     <div>
-                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "#f4ece0" }}>
+                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "#1a1308" }}>
                         {v.title}
                       </div>
-                      <div style={{ color: "#9c8d74", fontSize: 13, lineHeight: 1.6, marginTop: 4 }}>{v.text}</div>
+                      <div style={{ color: "#6b6253", fontSize: 13, lineHeight: 1.6, marginTop: 4, fontWeight: 600 }}>{v.text}</div>
                     </div>
                   </div>
                 </Reveal>

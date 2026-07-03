@@ -4,6 +4,7 @@ import Link from "next/link";
 import { PRODUCTS, waForProduct } from "@/lib/data";
 import { Reveal } from "./Reveal";
 import { Placeholder } from "./Placeholder";
+import { VanityLights } from "./VanityLights";
 
 type Product = (typeof PRODUCTS)[number];
 type Phase = "in" | "out";
@@ -66,7 +67,7 @@ export function CatalogRail() {
     <section
       id="catalogo"
       style={{
-        background: "linear-gradient(180deg, #14100b, #100c08 50%, #14100b)",
+        background: "#ffffff",
         padding: "clamp(70px,9vw,130px) clamp(20px,5vw,64px)",
         overflow: "hidden",
       }}
@@ -84,7 +85,7 @@ export function CatalogRail() {
             }}
           >
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#c6a76b" }}>
+              <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#9a7328" }}>
                 Selección actual
               </div>
               <h2
@@ -92,17 +93,21 @@ export function CatalogRail() {
                   fontFamily: "'Cormorant Garamond', serif",
                   fontWeight: 500,
                   fontSize: "clamp(38px,5.5vw,68px)",
-                  color: "#f4ece0",
+                  color: "#1a1308",
                   margin: "10px 0 0",
                 }}
               >
                 El catálogo
               </h2>
             </div>
-            <p className="catalog-head-p" style={{ maxWidth: 380, color: "#bcae94", fontSize: 14.5, lineHeight: 1.7 }}>
+            <p className="catalog-head-p" style={{ maxWidth: 380, color: "#6b6253", fontSize: 14.5, lineHeight: 1.7 }}>
               Miralas rotar en el perchero. Tocá cualquiera para consultarla por WhatsApp.
             </p>
           </div>
+        </Reveal>
+
+        <Reveal>
+          <VanityLights />
         </Reveal>
 
         <Reveal>

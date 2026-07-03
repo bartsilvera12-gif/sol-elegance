@@ -15,7 +15,7 @@ export function Contact() {
       style={{
         position: "relative",
         padding: "clamp(80px,10vw,140px) clamp(20px,5vw,64px)",
-        background: "#100c08",
+        background: "#ffffff",
         overflow: "hidden",
       }}
     >
@@ -55,7 +55,7 @@ export function Contact() {
 
         <Reveal delay={60}>
           <div style={{ textAlign: "center", marginTop: 22 }}>
-            <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#c6a76b" }}>
+            <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#9a7328" }}>
               Hablemos
             </div>
             <h2
@@ -63,14 +63,14 @@ export function Contact() {
                 fontFamily: "'Cormorant Garamond', serif",
                 fontWeight: 500,
                 fontSize: "clamp(36px,5vw,62px)",
-                color: "#f4ece0",
+                color: "#1a1308",
                 margin: "14px 0",
                 lineHeight: 1.05,
               }}
             >
               ¿Lista para <em className="shimmer-gold" style={{ fontStyle: "italic" }}>brillar</em>?
             </h2>
-            <p style={{ color: "#bcae94", fontSize: 15, lineHeight: 1.75, maxWidth: 560, margin: "0 auto" }}>
+            <p style={{ color: "#6b6253", fontSize: 15, lineHeight: 1.75, maxWidth: 560, margin: "0 auto" }}>
               Escribinos y te ayudamos a encontrar la prenda perfecta. Atención online todos los días.
             </p>
           </div>
@@ -81,7 +81,13 @@ export function Contact() {
             <a href={WA_MAIN} target="_blank" rel="noopener" className="pill-gold pill-gold-lg">
               Escribir por WhatsApp <span>→</span>
             </a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener" className="pill-outline">
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener"
+              className="pill-outline"
+              style={{ color: "#7a5a2e", borderColor: "rgba(154,115,40,.5)" }}
+            >
               Síguenos en Instagram
             </a>
           </div>
@@ -105,8 +111,8 @@ export function Contact() {
                   display: "flex",
                   alignItems: "center",
                   gap: 14,
-                  background: "rgba(28,23,16,.6)",
-                  border: "1px solid rgba(198,167,107,.22)",
+                  background: "#faf7f2",
+                  border: "1px solid rgba(154,115,40,.28)",
                   padding: 20,
                   borderRadius: 16,
                   textDecoration: "none",
@@ -120,21 +126,21 @@ export function Contact() {
                     width: 44,
                     height: 44,
                     borderRadius: "50%",
-                    background: "rgba(198,167,107,.1)",
-                    border: "1px solid rgba(198,167,107,.35)",
+                    background: "rgba(154,115,40,.1)",
+                    border: "1px solid rgba(154,115,40,.35)",
                     display: "grid",
                     placeItems: "center",
-                    color: "#c6a76b",
+                    color: "#9a7328",
                     fontSize: 18,
                   }}
                 >
                   {c.icon}
                 </div>
                 <div>
-                  <div style={{ fontSize: 10.5, letterSpacing: 2.5, textTransform: "uppercase", color: "#9c8d74" }}>
+                  <div style={{ fontSize: 10.5, letterSpacing: 2.5, textTransform: "uppercase", color: "#6b6253" }}>
                     {c.label}
                   </div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "#f4ece0", marginTop: 4 }}>
+                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "#1a1308", marginTop: 4 }}>
                     {c.value}
                   </div>
                 </div>

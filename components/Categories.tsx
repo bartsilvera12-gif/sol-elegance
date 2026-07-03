@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { CATEGORIES, CatKey } from "@/lib/data";
 import { Reveal } from "./Reveal";
 import { Placeholder } from "./Placeholder";
+import { VanityLights } from "./VanityLights";
 
 const ITEM_W = 260;
 const ITEM_GAP = 32;
@@ -26,6 +27,7 @@ export function Categories({
     lastT: 0,
     velocity: 0,
     moved: false,
+    captured: false,
   });
   const target = useRef<number | null>(null);
   const raf = useRef<number | null>(null);
@@ -137,15 +139,24 @@ export function Categories({
       lastT: performance.now(),
       velocity: 0,
       moved: false,
+      captured: false,
     };
-    el.setPointerCapture(e.pointerId);
     el.style.cursor = "grabbing";
   };
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const el = scrollerRef.current;
     if (!el || !drag.current.isDown) return;
     const dx = e.clientX - drag.current.startX;
-    if (Math.abs(dx) > 4) drag.current.moved = true;
+    if (Math.abs(dx) > 4) {
+      drag.current.moved = true;
+      // Capture the pointer only once a real drag starts, so a plain tap still
+      // delivers its click to the category button. Capturing on pointerdown
+      // would retarget the click to the scroller and swallow it.
+      if (!drag.current.captured) {
+        try { el.setPointerCapture(e.pointerId); } catch {}
+        drag.current.captured = true;
+      }
+    }
     el.scrollLeft = drag.current.startScroll - dx;
     const now = performance.now();
     const dt = Math.max(1, now - drag.current.lastT);
@@ -179,11 +190,11 @@ export function Categories({
   useEffect(() => () => stopRaf(), []);
 
   return (
-    <section id="categorias" className="section">
+    <section id="categorias" className="section" style={{ background: "#ffffff" }}>
       <div className="container-x">
         <Reveal>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#c6a76b" }}>
+            <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#9a7328" }}>
               Encuentra tu estilo
             </div>
             <h2
@@ -191,17 +202,21 @@ export function Categories({
                 fontFamily: "'Cormorant Garamond', serif",
                 fontWeight: 500,
                 fontSize: "clamp(38px,5.5vw,68px)",
-                color: "#f4ece0",
+                color: "#1a1308",
                 lineHeight: 1.02,
                 margin: "14px 0 10px",
               }}
             >
               Categorías
             </h2>
-            <p style={{ maxWidth: 580, margin: "0 auto", color: "#bcae94", fontSize: 15, lineHeight: 1.7 }}>
+            <p style={{ maxWidth: 580, margin: "0 auto", color: "#6b6253", fontSize: 15, lineHeight: 1.7 }}>
               Deslizá el perchero para descubrir cada categoría.
             </p>
           </div>
+        </Reveal>
+
+        <Reveal>
+          <VanityLights />
         </Reveal>
 
         <Reveal>

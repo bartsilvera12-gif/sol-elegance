@@ -1,11 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { NAV_LINKS } from "@/lib/data";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  // The homepage hero is dark, so keep the nav transparent there until scroll.
+  // Inner pages now have white backgrounds, so the nav needs its solid bar
+  // from the top — otherwise the light links are invisible over white.
+  const solid = scrolled || pathname !== "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -23,10 +30,10 @@ export function Navbar() {
         right: 0,
         zIndex: 50,
         padding: "16px clamp(20px,5vw,64px)",
-        background: scrolled ? "rgba(16,12,8,.9)" : "transparent",
-        backdropFilter: scrolled ? "blur(14px)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(14px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(198,167,107,.18)" : "1px solid transparent",
+        background: solid ? "rgba(16,12,8,.9)" : "transparent",
+        backdropFilter: solid ? "blur(14px)" : "none",
+        WebkitBackdropFilter: solid ? "blur(14px)" : "none",
+        borderBottom: solid ? "1px solid rgba(198,167,107,.18)" : "1px solid transparent",
         transition: "all .4s ease",
         display: "flex",
         alignItems: "center",
