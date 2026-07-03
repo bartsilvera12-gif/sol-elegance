@@ -51,9 +51,20 @@ export function Categories({
     const onScroll = () => updateEdges();
     el.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    // Recalculate once more after any late layout changes (fonts, images)
+    const t = setTimeout(updateEdges, 300);
+    // Observe rail size (children width can change on breakpoints / hydration)
+    const rail = el.querySelector(".rack-rail") as HTMLElement | null;
+    let ro: ResizeObserver | null = null;
+    if (rail && typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(() => updateEdges());
+      ro.observe(rail);
+    }
     return () => {
       el.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      clearTimeout(t);
+      ro?.disconnect();
     };
   }, []);
 
@@ -97,11 +108,19 @@ export function Categories({
   const slide = (dir: 1 | -1) => {
     const el = scrollerRef.current;
     if (!el) return;
+    // Cancel any in-flight rAF/inertia so we don't fight it
     stopRaf();
-    const base = target.current ?? el.scrollLeft;
-    const max = el.scrollWidth - el.clientWidth;
-    target.current = Math.max(0, Math.min(max, base + dir * (ITEM_W + ITEM_GAP) * 2));
-    raf.current = requestAnimationFrame(tick);
+    target.current = null;
+    drag.current.velocity = 0;
+    // Use native smooth scroll — most reliable across browsers
+    const amount = dir * (ITEM_W + ITEM_GAP) * 2;
+    if (typeof el.scrollBy === "function") {
+      el.scrollBy({ left: amount, behavior: "smooth" });
+    } else {
+      el.scrollLeft += amount;
+    }
+    // Refresh edge flags shortly after the scroll settles
+    setTimeout(updateEdges, 350);
   };
 
   const onDown = (e: React.PointerEvent<HTMLDivElement>) => {

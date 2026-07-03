@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { Sun3D } from "./Sun3D";
-import { Placeholder } from "./Placeholder";
 
 export function Hero() {
   return (
@@ -145,15 +144,20 @@ export function Hero() {
             />
             <div
               style={{
+                position: "relative",
+                aspectRatio: "3 / 4",
                 borderRadius: "200px 200px 22px 22px",
                 overflow: "hidden",
                 boxShadow: "0 40px 90px -30px rgba(0,0,0,.8)",
               }}
             >
-              <Placeholder
-                ratio="3 / 4"
-                rounded={0}
-                label="Foto de portada — modelo con prenda Sol Elegance"
+              <Image
+                src="/hero-portada.png"
+                alt="Modelo con prenda Sol Elegance"
+                fill
+                priority
+                sizes="(max-width: 860px) 100vw, 45vw"
+                style={{ objectFit: "cover" }}
               />
             </div>
             <div

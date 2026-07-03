@@ -2,23 +2,24 @@
 import { useState } from "react";
 import { CatKey } from "@/lib/data";
 import { Categories } from "./Categories";
-import { Catalog } from "./Catalog";
+import { CatalogRail } from "./CatalogRail";
 
 export function CatalogSection() {
-  const [filter, setFilter] = useState<CatKey>("todos");
+  // Filter state is kept for compatibility with the pickCategory scroll flow.
+  const [, setFilter] = useState<CatKey>("todos");
 
   const pickCategory = (v: CatKey) => {
     setFilter(v);
-    requestAnimationFrame(() => {
-      const el = document.getElementById("catalogo");
-      el?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    // Navigate to the full catalog page with the picked category as query param
+    if (typeof window !== "undefined") {
+      window.location.href = `/catalogo?cat=${encodeURIComponent(v)}`;
+    }
   };
 
   return (
     <>
       <Categories onPick={pickCategory} />
-      <Catalog filter={filter} onFilterChange={setFilter} />
+      <CatalogRail />
     </>
   );
 }
