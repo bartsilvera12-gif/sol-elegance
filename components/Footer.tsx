@@ -1,140 +1,140 @@
-import Image from "next/image";
-import { NAV_LINKS, WA_MAIN, INSTAGRAM_URL, TECH_PROVIDER } from "@/lib/data";
+"use client";
+import { useState } from "react";
+import { WA_MAIN, INSTAGRAM_URL, TECH_PROVIDER } from "@/lib/data";
+
+type Item = { label: string; href?: string; ext?: boolean };
+const SECTIONS: { title: string; items: Item[] }[] = [
+  {
+    title: "Contactos",
+    items: [
+      { label: "WhatsApp · +595 982 314033", href: WA_MAIN, ext: true },
+      { label: "Instagram · @soleleganceboutique", href: INSTAGRAM_URL, ext: true },
+    ],
+  },
+  {
+    title: "Asistencia",
+    items: [
+      { label: "Envíos a todo el país" },
+      { label: "Cambios y consultas", href: "/contacto" },
+      { label: "Ver catálogo", href: "/catalogo" },
+    ],
+  },
+  {
+    title: "Empresa",
+    items: [
+      { label: "Nosotras", href: "/nosotras" },
+      { label: "Categorías", href: "/categorias" },
+    ],
+  },
+  {
+    title: "Legal",
+    items: [{ label: "Política de Privacidad", href: "/privacidad" }],
+  },
+];
+
+const IconInstagram = (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+    <rect x="3" y="3" width="18" height="18" rx="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+  </svg>
+);
+const IconWhatsApp = (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+    <path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.7.7-2.7-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.6-1.2a.4.4 0 0 0 0-.4c0-.1-.5-1.3-.7-1.7s-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11 11 0 0 0 4.3 3.8c1.6.6 1.9.5 2.3.5a2.4 2.4 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c0-.1-.2-.2-.5-.3z" />
+  </svg>
+);
 
 export function Footer() {
+  const [open, setOpen] = useState<Record<number, boolean>>({});
+  const toggle = (i: number) => setOpen((o) => ({ ...o, [i]: !o[i] }));
+
   return (
-    <footer
-      style={{
-        background: "#0e0b07",
-        borderTop: "1px solid rgba(198,167,107,.22)",
-        padding: "60px clamp(20px,5vw,64px) 30px",
-        color: "#bcae94",
-      }}
-    >
-      <div
-        className="container-x"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: 40,
-        }}
-      >
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <Image
-              src="/logo.png"
-              alt="Sol Elegance"
-              width={44}
-              height={44}
-              style={{ borderRadius: "50%", border: "1px solid rgba(198,167,107,.5)" }}
+    <footer style={{ background: "#fff", borderTop: "1px solid var(--line)" }}>
+      <div className="ft-main container-x">
+        {/* Accordion columns */}
+        <div className="ft-cols">
+          {SECTIONS.map((s, i) => {
+            const isOpen = !!open[i];
+            return (
+              <div className="ft-acc" key={s.title}>
+                <button className="ft-acc__head" aria-expanded={isOpen} onClick={() => toggle(i)}>
+                  <span>{s.title}</span>
+                  <svg
+                    className="ft-acc__chev"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    aria-hidden
+                    style={{ transform: isOpen ? "rotate(180deg)" : "none" }}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                <div className="ft-acc__body" data-open={isOpen}>
+                  <ul>
+                    {s.items.map((it) =>
+                      it.href ? (
+                        <li key={it.label}>
+                          <a href={it.href} {...(it.ext ? { target: "_blank", rel: "noopener" } : {})}>
+                            {it.label}
+                          </a>
+                        </li>
+                      ) : (
+                        <li key={it.label}>
+                          <span className="ft-muted">{it.label}</span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Newsletter + social */}
+        <div className="ft-news">
+          <div className="eyebrow" style={{ marginBottom: 16 }}>Suscríbase a nuestro boletín</div>
+          <form onSubmit={(e) => e.preventDefault()} className="ft-form">
+            <input
+              type="email"
+              placeholder="Dirección de correo electrónico *"
+              aria-label="Correo electrónico"
             />
-            <div>
-              <div style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 600, fontSize: 22, color: "#f4ece0" }}>
-                Sol Elegance
-              </div>
-              <div style={{ fontSize: 9.5, letterSpacing: 3.5, textTransform: "uppercase", color: "#c6a76b", marginTop: 4 }}>
-                Moda Femenina
-              </div>
-            </div>
-          </div>
-          <p style={{ fontSize: 13.5, lineHeight: 1.7, marginTop: 18, color: "#9c8d74" }}>
-            Una boutique pensada para realzar tu elegancia con prendas femeninas, cuidadas y atemporales.
+            <button type="submit" className="btn-dark" style={{ padding: "12px 24px" }}>
+              Suscríbase
+            </button>
+          </form>
+          <p className="ft-legal-note">
+            Al suscribirse confirma que ha leído nuestra{" "}
+            <a href="/privacidad">Política de Privacidad</a> y desea recibir novedades de Sol Elegance.
           </p>
-        </div>
 
-        <div>
-          <div style={{ fontSize: 10.5, letterSpacing: 3, textTransform: "uppercase", color: "#c6a76b", marginBottom: 18 }}>
-            Navegación
+          <div className="eyebrow" style={{ margin: "26px 0 14px" }}>Síganos</div>
+          <div className="ft-social">
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener" aria-label="Instagram">{IconInstagram}</a>
+            <a href={WA_MAIN} target="_blank" rel="noopener" aria-label="WhatsApp">{IconWhatsApp}</a>
           </div>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 10 }}>
-            {NAV_LINKS.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  style={{
-                    color: "#d8cbb4",
-                    textDecoration: "none",
-                    fontSize: 13.5,
-                    letterSpacing: 1.4,
-                  }}
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <div style={{ fontSize: 10.5, letterSpacing: 3, textTransform: "uppercase", color: "#c6a76b", marginBottom: 18 }}>
-            Síguenos
-          </div>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 10 }}>
-            <li>
-              <a href={INSTAGRAM_URL} target="_blank" rel="noopener" style={linkStyle}>
-                Instagram · @soleleganceboutique
-              </a>
-            </li>
-            <li>
-              <a href={WA_MAIN} target="_blank" rel="noopener" style={linkStyle}>
-                WhatsApp · +595 982 314033
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
 
-      <div
-        className="container-x"
-        style={{
-          marginTop: 50,
-          paddingTop: 22,
-          borderTop: "1px solid rgba(198,167,107,.16)",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 14,
-          justifyContent: "space-between",
-          fontSize: 11.5,
-          color: "#7a6e58",
-          letterSpacing: 1.4,
-        }}
-      >
-        <span>© 2026 Sol Elegance · Moda Femenina</span>
-        <a
-          href="/privacidad"
-          style={{
-            color: "#c6a76b",
-            textDecoration: "none",
-            letterSpacing: 1.4,
-            borderBottom: "1px solid rgba(198,167,107,.35)",
-            paddingBottom: 2,
-          }}
-        >
-          Política de Privacidad
-        </a>
+      {/* Giant wordmark */}
+      <div className="ft-wordmark" aria-hidden>
+        <span className="serif">Sol Elegance</span>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="ft-bottom container-x">
+        <span>© 2026 Sol Elegance — Moda Femenina</span>
         <span>
           Desarrollado por{" "}
-          <a
-            href={TECH_PROVIDER.website}
-            target="_blank"
-            rel="noopener"
-            style={{
-              color: "#c6a76b",
-              textDecoration: "none",
-              fontWeight: 600,
-              letterSpacing: 1.4,
-            }}
-          >
-            Neura
-          </a>
+          <a href={TECH_PROVIDER.website} target="_blank" rel="noopener">Neura</a>
         </span>
       </div>
     </footer>
   );
 }
-
-const linkStyle: React.CSSProperties = {
-  color: "#d8cbb4",
-  textDecoration: "none",
-  fontSize: 13.5,
-};

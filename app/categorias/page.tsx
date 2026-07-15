@@ -1,5 +1,6 @@
 import { PageShell } from "@/components/PageShell";
-import { Categories } from "@/components/Categories";
+import { CatalogWithQuery } from "@/components/CatalogWithQuery";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Categorías — Sol Elegance",
@@ -9,7 +10,9 @@ export const metadata = {
 export default function CategoriasPage() {
   return (
     <PageShell showHeader={false}>
-      <Categories />
+      <Suspense fallback={null}>
+        <CatalogWithQuery />
+      </Suspense>
     </PageShell>
   );
 }

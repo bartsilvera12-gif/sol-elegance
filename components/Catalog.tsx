@@ -1,8 +1,34 @@
 "use client";
-import { useState } from "react";
-import { FILTERS, PRODUCTS, CatKey, waForProduct } from "@/lib/data";
-import { Reveal } from "./Reveal";
+import { useMemo, useState } from "react";
+import {
+  FILTERS,
+  PRODUCTS,
+  CatKey,
+  SortKey,
+  SORT_OPTIONS,
+  formatPrice,
+  slugify,
+} from "@/lib/data";
+import Image from "next/image";
 import { Placeholder } from "./Placeholder";
+import { Reveal } from "./Reveal";
+
+/** Fills its parent with a cover image at a 3:4 ratio (matches the placeholder). */
+function ProductPhoto({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div style={{ position: "relative", width: "100%", aspectRatio: "3 / 4" }}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 900px) 50vw, 33vw"
+        style={{ objectFit: "cover" }}
+      />
+    </div>
+  );
+}
+
+const PAGE = 9;
 
 export function Catalog({
   initialFilter = "todos",
@@ -17,184 +43,249 @@ export function Catalog({
   const [internal, setInternal] = useState<CatKey>(initialFilter);
   const filter = controlledFilter ?? internal;
 
+  const [sort, setSort] = useState<SortKey>("sugerido");
+  const [sortOpen, setSortOpen] = useState(false);
+  const [visible, setVisible] = useState(PAGE);
+
   const setFilter = (v: CatKey) => {
     if (onFilterChange) onFilterChange(v);
     else setInternal(v);
+    setVisible(PAGE);
   };
 
+  const list = useMemo(() => {
+    const base = PRODUCTS.filter((p) => filter === "todos" || p.cat === filter);
+    const sorted = [...base];
+    if (sort === "nuevo") sorted.reverse();
+    else if (sort === "precio-desc") sorted.sort((a, b) => b.price - a.price);
+    else if (sort === "precio-asc") sorted.sort((a, b) => a.price - b.price);
+    return sorted;
+  }, [filter, sort]);
+
+  const shown = list.slice(0, visible);
+  const sortLabel = SORT_OPTIONS.find((o) => o.value === sort)?.label ?? "Sugerido";
+
   return (
-    <section
-      id="catalogo"
-      style={{
-        background: "#ffffff",
-        padding: "clamp(70px,9vw,130px) clamp(20px,5vw,64px)",
-      }}
-    >
-      <div className="container-x">
-        <Reveal>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              gap: 20,
-              marginBottom: 32,
-            }}
-          >
-            <div>
-              <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#9a7328" }}>
-                Selección actual
-              </div>
-              <h2
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontWeight: 500,
-                  fontSize: "clamp(38px,5.5vw,68px)",
-                  color: "#1a1308",
-                  margin: "10px 0 0",
-                }}
-              >
-                El catálogo
-              </h2>
-            </div>
-            <p className="catalog-head-p" style={{ maxWidth: 360, color: "#6b6253", fontSize: 14.5, lineHeight: 1.7 }}>
-              Tocá una prenda para consultar disponibilidad, talles y colores por WhatsApp.
-            </p>
-          </div>
-        </Reveal>
+    <section id="catalogo" style={{ background: "#fff", paddingTop: "clamp(28px,4vw,52px)" }}>
+      {/* Breadcrumb */}
+      <div
+        style={{
+          padding: "0 clamp(16px,4vw,56px)",
+          fontSize: 11,
+          letterSpacing: 1,
+          color: "var(--ink-3)",
+          textTransform: "uppercase",
+        }}
+      >
+        <a href="/" style={{ color: "inherit", textDecoration: "none" }}>Inicio</a>
+        <span style={{ margin: "0 8px" }}>/</span>
+        <span style={{ color: "var(--ink)" }}>Catálogo</span>
+      </div>
 
-        <Reveal>
-          <div className="filter-row" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 38 }}>
-            {FILTERS.map((f) => {
-              const active = filter === f.value;
-              return (
-                <button
-                  key={f.value}
-                  onClick={() => setFilter(f.value)}
-                  style={{
-                    cursor: "pointer",
-                    borderRadius: 40,
-                    padding: "11px 22px",
-                    fontSize: 12,
-                    letterSpacing: 1.8,
-                    textTransform: "uppercase",
-                    fontWeight: 600,
-                    transition: "all .3s ease",
-                    ...(active
-                      ? {
-                          background: "linear-gradient(135deg,#caa86a,#e7d2a3)",
-                          color: "#1a1308",
-                          border: "1px solid transparent",
-                        }
-                      : {
-                          background: "transparent",
-                          color: "#9a7328",
-                          border: "1px solid rgba(154,115,40,.4)",
-                        }),
-                  }}
-                >
-                  {f.label}
-                </button>
-              );
-            })}
-          </div>
-        </Reveal>
-
-        <div
+      {/* Title + count */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          gap: 14,
+          padding: "clamp(18px,2.6vw,34px) clamp(16px,4vw,56px) clamp(20px,2.6vw,30px)",
+        }}
+      >
+        <h1
+          className="serif"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(248px, 1fr))",
-            gap: "clamp(16px,2vw,28px)",
+            fontSize: "clamp(30px,4.4vw,54px)",
+            fontWeight: 500,
+            letterSpacing: 1,
+            textTransform: "uppercase",
+            margin: 0,
+            color: "var(--ink)",
           }}
         >
-          {PRODUCTS.map((p, i) => {
-            const show = filter === "todos" || p.cat === filter;
-            return (
-              <Reveal key={p.name} delay={(i % 4) * 60}>
-                <article
-                  className="prod-card"
-                  style={{
-                    display: show ? "flex" : "none",
-                    flexDirection: "column",
-                    borderRadius: 16,
-                    overflow: "hidden",
-                    background: "#1c1710",
-                    border: "1px solid rgba(198,167,107,.18)",
-                    transition: "transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s ease, border-color .35s ease",
-                  }}
-                >
-                  <div style={{ position: "relative" }}>
-                    <div className="prod-img" style={{ transition: "transform .9s cubic-bezier(.2,.7,.2,1)" }}>
-                      <Placeholder ratio="3 / 4" rounded={0} label={p.name} />
-                    </div>
-                    <div
+          Ropa
+        </h1>
+        <span style={{ fontSize: 13, color: "var(--ink-3)" }}>{list.length}</span>
+      </div>
+
+      {/* Subcategory chips */}
+      <div className="subcats no-scrollbar">
+        {FILTERS.map((f) => (
+          <button
+            key={f.value}
+            className="subcat"
+            data-active={filter === f.value}
+            onClick={() => setFilter(f.value)}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Toolbar: Filtros / Ordenar por */}
+      <div
+        className="toolbar"
+        style={{ position: "sticky", top: "var(--hdr-h, 65px)", background: "#fff", zIndex: 20, transition: "top .35s linear" }}
+      >
+        <button className="toolbar__btn" aria-label="Filtros">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+            <path d="M3 5h18M6 12h12M10 19h4" />
+          </svg>
+          Filtros
+        </button>
+
+        <div style={{ position: "relative" }}>
+          <button
+            className="toolbar__btn"
+            onClick={() => setSortOpen((o) => !o)}
+            aria-expanded={sortOpen}
+          >
+            <span style={{ color: "var(--ink-3)" }}>Ordenar por</span>
+            <span>{sortLabel}</span>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              aria-hidden
+              style={{ transform: sortOpen ? "rotate(180deg)" : "none", transition: "transform .25s ease" }}
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+
+          {sortOpen && (
+            <>
+              <div
+                onClick={() => setSortOpen(false)}
+                style={{ position: "fixed", inset: 0, zIndex: 30 }}
+                aria-hidden
+              />
+              <ul
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "calc(100% + 10px)",
+                  zIndex: 40,
+                  listStyle: "none",
+                  margin: 0,
+                  padding: "8px 0",
+                  minWidth: 220,
+                  background: "#fff",
+                  border: "1px solid var(--line)",
+                  boxShadow: "0 20px 50px -24px rgba(0,0,0,.35)",
+                }}
+              >
+                {SORT_OPTIONS.map((o) => (
+                  <li key={o.value}>
+                    <button
+                      onClick={() => {
+                        setSort(o.value);
+                        setSortOpen(false);
+                      }}
                       style={{
-                        position: "absolute",
-                        left: 14,
-                        top: 14,
-                        background: "rgba(14,11,7,.78)",
-                        backdropFilter: "blur(8px)",
-                        padding: "6px 12px",
-                        borderRadius: 30,
-                        border: "1px solid rgba(198,167,107,.3)",
-                        fontSize: 9.5,
-                        letterSpacing: 2,
-                        textTransform: "uppercase",
-                        color: "#c6a76b",
+                        width: "100%",
+                        textAlign: "left",
+                        background: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                        fontFamily: "inherit",
+                        padding: "11px 20px",
+                        fontSize: 12.5,
+                        letterSpacing: ".4px",
+                        color: sort === o.value ? "var(--ink)" : "var(--ink-2)",
+                        fontWeight: sort === o.value ? 500 : 300,
                       }}
                     >
-                      {p.cat}
-                    </div>
-                  </div>
-                  <div style={{ padding: 22, display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
-                    <h3
-                      style={{
-                        fontFamily: "'Cormorant Garamond', serif",
-                        fontSize: 23,
-                        color: "#f4ece0",
-                        margin: 0,
-                        fontWeight: 500,
-                      }}
-                    >
-                      {p.name}
-                    </h3>
-                    <p style={{ fontSize: 12.5, color: "#9c8d74", lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
-                    <a
-                      href={waForProduct(p.name)}
-                      target="_blank"
-                      rel="noopener"
-                      className="prod-cta"
-                      style={{
-                        marginTop: "auto",
-                        textAlign: "center",
-                        textDecoration: "none",
-                        border: "1px solid rgba(198,167,107,.5)",
-                        color: "#c6a76b",
-                        padding: "11px 18px",
-                        borderRadius: 40,
-                        fontSize: 11,
-                        letterSpacing: 1.6,
-                        textTransform: "uppercase",
-                        fontWeight: 600,
-                        transition: "all .3s ease",
-                      }}
-                    >
-                      Consultar por WhatsApp
-                    </a>
-                  </div>
-                </article>
-              </Reveal>
-            );
-          })}
+                      {o.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </div>
 
-      <style>{`
-        .prod-card:hover { transform: translateY(-8px); box-shadow: 0 32px 64px -30px rgba(0,0,0,.9); border-color: rgba(198,167,107,.5) !important; }
-        .prod-card:hover .prod-img { transform: scale(1.07); }
-        .prod-cta:hover { background: linear-gradient(135deg,#caa86a,#e7d2a3); color: #1a1308 !important; border-color: transparent !important; }
-      `}</style>
+      {/* Product grid */}
+      <div className="pdp-grid">
+        {shown.map((p, i) => (
+          <Reveal
+            key={p.name}
+            delay={(i % 3) * 90}
+            style={{ display: "flex" }}
+          >
+            <a className="prod" href={`/producto/${slugify(p.name)}`} style={{ width: "100%" }}>
+              <div className="prod__media">
+                {/* Base image (real photo if available, else placeholder) */}
+                <div className="prod__ph">
+                  {p.img ? (
+                    <ProductPhoto src={p.img} alt={p.name} />
+                  ) : (
+                    <Placeholder ratio="3 / 4" rounded={0} label={p.name} />
+                  )}
+                </div>
+                {/* Second view — crossfades in on hover */}
+                <div className="prod__hover">
+                  {p.img2 ? (
+                    <ProductPhoto src={p.img2} alt={`${p.name} — vista 2`} />
+                  ) : p.img ? (
+                    <ProductPhoto src={p.img} alt={p.name} />
+                  ) : (
+                    <Placeholder
+                      ratio="3 / 4"
+                      rounded={0}
+                      label="Ver prenda"
+                      style={{ background: "linear-gradient(315deg,#efece7 0%,#e4e0d9 55%,#eeeae4 100%)" }}
+                    />
+                  )}
+                </div>
+                <button
+                  className="prod__wish"
+                  aria-label="Agregar a deseos"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden>
+                    <path d="M12 20s-7-4.4-9.2-8.6C1.2 8.1 2.6 5 5.7 5c1.9 0 3.1 1.1 3.9 2.2C10.3 6.1 11.5 5 13.4 5c3.1 0 4.5 3.1 2.9 6.4C19.1 15.6 12 20 12 20z" />
+                  </svg>
+                </button>
+              </div>
+              <div className="prod__info">
+                <span className="prod__cat">{p.cat}</span>
+                <span className="prod__name">{p.name}</span>
+                <span className="prod__price">{formatPrice(p.price)}</span>
+                <span className="prod__cta">Ver prenda</span>
+              </div>
+            </a>
+          </Reveal>
+        ))}
+      </div>
+
+      {/* Mostrar más */}
+      {visible < list.length && (
+        <div style={{ display: "flex", justifyContent: "center", padding: "clamp(34px,5vw,64px) 16px" }}>
+          <button className="btn-outline" onClick={() => setVisible((v) => v + PAGE)}>
+            Mostrar más
+          </button>
+        </div>
+      )}
+
+      {/* Editorial description */}
+      <div
+        className="container-narrow"
+        style={{
+          textAlign: "center",
+          padding: "clamp(40px,6vw,90px) clamp(20px,5vw,40px) clamp(56px,7vw,110px)",
+        }}
+      >
+        <p style={{ color: "var(--ink-2)", fontSize: 14.5, lineHeight: 1.9, letterSpacing: ".2px", margin: 0 }}>
+          Una selección pensada para la mujer que se siente segura en su propia piel.
+          Siluetas femeninas, tejidos suaves y detalles atemporales que acompañan cada
+          momento del día. Tocá una prenda para consultar disponibilidad, talles y colores
+          por WhatsApp.
+        </p>
+      </div>
     </section>
   );
 }

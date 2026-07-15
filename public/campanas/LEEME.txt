@@ -1,0 +1,20 @@
+IMÁGENES DE CAMPAÑA (slides del home)
+=====================================
+
+Colocá aquí las fotos grandes para los slides del carrusel principal
+(horizontales/full-screen, idealmente 1920 x 1080 px o más).
+
+Luego abrí  components/HeroCarousel.tsx  y en cada slide reemplazá el fondo
+de color por la imagen:
+
+  {
+    image: "/campanas/vestidos.jpg",   // <-- tu foto de campaña
+    kicker: "Destacado",
+    title: "Vestidos",
+    subtitle: "Elegancia para cada día",
+    ctaLabel: "Comprar",
+    ctaHref: "/catalogo?cat=Vestidos",
+  },
+
+- Si un slide no tiene "image", usa el fondo de color (bg) automáticamente.
+- El primer slide ya usa /hero-portada.png.

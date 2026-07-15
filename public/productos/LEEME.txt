@@ -1,0 +1,18 @@
+FOTOS DE PRODUCTO — Sol Elegance
+=================================
+
+Colocá aquí las fotos de las prendas (JPG o PNG, idealmente verticales 3:4,
+por ejemplo 900 x 1200 px).
+
+Luego abrí  lib/data.ts  y en cada producto agregá la ruta de su foto:
+
+  { name: "Vestido Aurora", cat: "Vestidos", desc: "...", price: 320000,
+    img:  "/productos/vestido-aurora.jpg",      // foto principal
+    img2: "/productos/vestido-aurora-2.jpg" },  // opcional: 2da vista (crossfade al pasar el mouse)
+
+- Si un producto NO tiene "img", se muestra el placeholder gris automáticamente.
+- "img2" es opcional; si lo agregás, esa segunda foto aparece con un fundido
+  al pasar el mouse por encima (igual que en miumiu.com).
+
+Las fotos las podés obtener de tu propio Instagram (@soleleganceboutique) o
+exportándolas con "Descargar tu información" desde la configuración de Instagram.

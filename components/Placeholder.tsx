@@ -1,7 +1,7 @@
 export function Placeholder({
   label,
   ratio = "3 / 4",
-  rounded = 16,
+  rounded = 0,
   style,
 }: {
   label?: string;
@@ -15,16 +15,14 @@ export function Placeholder({
         width: "100%",
         aspectRatio: ratio,
         borderRadius: rounded,
-        background:
-          "linear-gradient(135deg, #1c1710 0%, #221b13 60%, #1a140e 100%)",
-        border: "1px dashed rgba(198,167,107,.28)",
+        background: "linear-gradient(145deg, #f4f2ef 0%, #eceae5 55%, #f2f0ec 100%)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "rgba(198,167,107,.55)",
+        color: "var(--ink-4)",
         fontFamily: "'Cormorant Garamond', serif",
         fontStyle: "italic",
-        fontSize: 14,
+        fontSize: 15,
         textAlign: "center",
         padding: 16,
         position: "relative",
@@ -32,8 +30,7 @@ export function Placeholder({
         ...style,
       }}
     >
-      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 50% 30%, rgba(198,167,107,.07), transparent 60%)" }} />
-      <span style={{ position: "relative", letterSpacing: 1.4 }}>{label ?? "Imagen próximamente"}</span>
+      <span style={{ position: "relative", letterSpacing: 1 }}>{label ?? "Imagen próximamente"}</span>
     </div>
   );
 }

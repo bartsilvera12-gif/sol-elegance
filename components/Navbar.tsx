@@ -1,195 +1,204 @@
 "use client";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
-import { NAV_LINKS } from "@/lib/data";
+import { NAV_LINKS, WA_MAIN } from "@/lib/data";
+
+/* ---- Minimal line icons (Miu Miu style) ---- */
+const Icon = {
+  menu: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+      <path d="M3 6h18M3 12h18M3 18h18" />
+    </svg>
+  ),
+  close: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+      <path d="M5 5l14 14M19 5L5 19" />
+    </svg>
+  ),
+  search: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.2-3.2" />
+    </svg>
+  ),
+  heart: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+      <path d="M12 20s-7-4.4-9.2-8.6C1.2 8.1 2.6 5 5.7 5c1.9 0 3.1 1.1 3.9 2.2C10.3 6.1 11.5 5 13.4 5c3.1 0 4.5 3.1 2.9 6.4C19.1 15.6 12 20 12 20z" />
+    </svg>
+  ),
+  bag: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+      <path d="M6 8h12l-1 12H7L6 8z" />
+      <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+    </svg>
+  ),
+};
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-
-  // The homepage hero is dark, so keep the nav transparent there until scroll.
-  // Inner pages now have white backgrounds, so the nav needs its solid bar
-  // from the top — otherwise the light links are invisible over white.
-  const solid = scrolled || pathname !== "/";
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
-    onScroll();
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  // Hide the header on scroll-down, reveal on scroll-up (Miu Miu behaviour).
+  useEffect(() => {
+    let last = window.scrollY;
+    let ticking = false;
+    const update = () => {
+      const y = window.scrollY;
+      const goingDown = y > last && y > 120;
+      setHidden(goingDown);
+      // Sync the sticky toolbar offset so it rises to the top when the header hides.
+      document.documentElement.style.setProperty("--hdr-h", goingDown ? "0px" : "65px");
+      last = y;
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return (
-    <nav
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
-        padding: "16px clamp(20px,5vw,64px)",
-        background: solid ? "rgba(16,12,8,.9)" : "transparent",
-        backdropFilter: solid ? "blur(14px)" : "none",
-        WebkitBackdropFilter: solid ? "blur(14px)" : "none",
-        borderBottom: solid ? "1px solid rgba(198,167,107,.18)" : "1px solid transparent",
-        transition: "all .4s ease",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: 24,
-      }}
-    >
-      <a href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
-        <div
-          style={{
-            width: 42,
-            height: 42,
-            borderRadius: "50%",
-            border: "1px solid rgba(198,167,107,.5)",
-            overflow: "hidden",
-            background: "#0e0b07",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image src="/logo.png" alt="Sol Elegance" width={42} height={42} style={{ objectFit: "cover" }} />
-        </div>
-        <div style={{ lineHeight: 1 }}>
-          <div className="nav-brand-title" style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 600, fontSize: 21, color: "#f4ece0" }}>
-            Sol Elegance
-          </div>
-          <div className="nav-brand-sub" style={{ fontSize: 8.5, letterSpacing: 4, textTransform: "uppercase", color: "#c6a76b", marginTop: 4 }}>
-            Moda Femenina
-          </div>
-        </div>
-      </a>
+  const showHeader = !hidden || open;
 
-      <ul
-        className="hidden md:flex"
+  return (
+    <>
+      <header
         style={{
-          listStyle: "none",
-          padding: 0,
-          margin: 0,
-          gap: 30,
-          alignItems: "center",
+          position: "sticky",
+          top: 0,
+          zIndex: 60,
+          background: "#fff",
+          borderBottom: "1px solid var(--line)",
+          transform: showHeader ? "translateY(0)" : "translateY(-100%)",
+          transition: "transform .35s linear",
         }}
       >
-        {NAV_LINKS.map((l) => (
-          <li key={l.href}>
-            <a
-              href={l.href}
-              style={{
-                color: "#d8cbb4",
-                textDecoration: "none",
-                fontSize: 13,
-                letterSpacing: 1.8,
-                textTransform: "uppercase",
-                transition: "color .25s ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#c6a76b")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#d8cbb4")}
-            >
-              {l.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <a
-          href="#carrito"
-          aria-label="Carrito"
-          className="nav-cart"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "10px 18px",
-            borderRadius: 40,
-            background: "#0e0b07",
-            border: "1px solid #c6a76b",
-            color: "#c6a76b",
-            fontSize: 12,
-            letterSpacing: 1.6,
-            textTransform: "uppercase",
-            fontWeight: 600,
-            textDecoration: "none",
-            transition: "background .25s ease, color .25s ease, transform .25s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#c6a76b";
-            e.currentTarget.style.color = "#0e0b07";
-            e.currentTarget.style.transform = "translateY(-2px)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "#0e0b07";
-            e.currentTarget.style.color = "#c6a76b";
-            e.currentTarget.style.transform = "translateY(0)";
-          }}
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-          >
-            <path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.5L22 7H6" />
-            <circle cx="10" cy="21" r="1.5" />
-            <circle cx="18" cy="21" r="1.5" />
-          </svg>
-          <span className="nav-cart-label">Carrito</span>
-        </a>
-        <button
-          aria-label="Menú"
-          onClick={() => setOpen(!open)}
-          className="md:hidden"
-          style={{
-            background: "transparent",
-            border: "1px solid rgba(198,167,107,.4)",
-            borderRadius: 10,
-            padding: "8px 10px",
-            color: "#c6a76b",
-            cursor: "pointer",
-          }}
-        >
-          {open ? "✕" : "☰"}
-        </button>
-      </div>
-
-      {open && (
         <div
-          className="md:hidden"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto 1fr",
+            alignItems: "center",
+            padding: "18px clamp(16px,4vw,56px)",
+          }}
+        >
+          {/* Left: menu + search */}
+          <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
+            <button className="hdr-icon" onClick={() => setOpen(true)} aria-label="Menú">
+              {Icon.menu}
+              <span className="nav-txt">Menú</span>
+            </button>
+            <button className="hdr-icon" aria-label="Buscar">
+              {Icon.search}
+              <span className="nav-txt">Buscar</span>
+            </button>
+          </div>
+
+          {/* Center: wordmark */}
+          <a
+            href="/"
+            style={{
+              textDecoration: "none",
+              textAlign: "center",
+              color: "var(--ink)",
+              lineHeight: 1,
+            }}
+          >
+            <div
+              className="serif"
+              style={{
+                fontSize: "clamp(20px,2.4vw,30px)",
+                fontWeight: 500,
+                letterSpacing: "clamp(2px,.5vw,5px)",
+                textTransform: "uppercase",
+              }}
+            >
+              Sol Elegance
+            </div>
+            <div
+              className="nav-brand-sub"
+              style={{ fontSize: 8.5, letterSpacing: 4, textTransform: "uppercase", color: "var(--ink-3)", marginTop: 6 }}
+            >
+              Moda Femenina
+            </div>
+          </a>
+
+          {/* Right: account / wishlist / bag */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 18 }}>
+            <a href="/contacto" className="hdr-icon nav-txt-only" aria-label="Contáctenos">
+              Contáctenos
+            </a>
+            <button className="hdr-icon" aria-label="Lista de deseos">{Icon.heart}</button>
+            <a href={WA_MAIN} target="_blank" rel="noopener" className="hdr-icon" aria-label="Bolsa">
+              {Icon.bag}
+            </a>
+          </div>
+        </div>
+      </header>
+
+      {/* Slide-in menu */}
+      <div
+        onClick={() => setOpen(false)}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 70,
+          background: "rgba(0,0,0,.35)",
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? "auto" : "none",
+          transition: "opacity .35s ease",
+        }}
+      >
+        <nav
+          onClick={(e) => e.stopPropagation()}
           style={{
             position: "absolute",
-            top: "100%",
+            top: 0,
             left: 0,
-            right: 0,
-            background: "rgba(16,12,8,.96)",
-            backdropFilter: "blur(14px)",
-            padding: "16px clamp(20px,5vw,64px)",
-            borderTop: "1px solid rgba(198,167,107,.18)",
+            bottom: 0,
+            width: "min(420px, 88vw)",
+            background: "#fff",
+            padding: "26px clamp(24px,4vw,44px)",
+            transform: open ? "translateX(0)" : "translateX(-100%)",
+            transition: "transform .4s cubic-bezier(.2,.7,.2,1)",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 14 }}>
+          <button
+            className="hdr-icon"
+            onClick={() => setOpen(false)}
+            aria-label="Cerrar"
+            style={{ alignSelf: "flex-start", marginBottom: 40 }}
+          >
+            {Icon.close}
+            <span>Cerrar</span>
+          </button>
+
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 4 }}>
             {NAV_LINKS.map((l) => (
               <li key={l.href}>
                 <a
                   href={l.href}
                   onClick={() => setOpen(false)}
+                  className="serif"
                   style={{
-                    color: "#d8cbb4",
+                    display: "block",
+                    padding: "14px 0",
+                    borderBottom: "1px solid var(--line)",
+                    color: "var(--ink)",
                     textDecoration: "none",
-                    fontSize: 13,
-                    letterSpacing: 1.8,
-                    textTransform: "uppercase",
+                    fontSize: 26,
+                    fontWeight: 500,
+                    letterSpacing: ".5px",
                   }}
                 >
                   {l.label}
@@ -197,8 +206,18 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-        </div>
-      )}
-    </nav>
+
+          <a
+            href={WA_MAIN}
+            target="_blank"
+            rel="noopener"
+            className="btn-dark"
+            style={{ marginTop: "auto", width: "100%" }}
+          >
+            Escríbenos por WhatsApp
+          </a>
+        </nav>
+      </div>
+    </>
   );
 }
