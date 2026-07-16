@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { Reveal } from "./Reveal";
-import { Placeholder } from "./Placeholder";
 
 const VALUES = [
   { icon: "✦", title: "Selección a mano", text: "Cada prenda elegida con cuidado." },
@@ -24,8 +24,14 @@ export function About() {
           <Reveal>
             <div style={{ position: "relative" }}>
               <div style={{ position: "absolute", inset: -14, borderRadius: 22, border: "1px solid rgba(198,167,107,.32)" }} />
-              <div style={{ borderRadius: 16, overflow: "hidden" }}>
-                <Placeholder ratio="4 / 5" rounded={0} label="Foto editorial — equipo / atelier" />
+              <div style={{ position: "relative", aspectRatio: "4 / 5", borderRadius: 16, overflow: "hidden" }}>
+                <Image
+                  src="/nosotras/atelier.jpg"
+                  alt="El atelier de Sol Elegance"
+                  fill
+                  sizes="(max-width: 860px) 100vw, 45vw"
+                  style={{ objectFit: "cover" }}
+                />
               </div>
               <div
                 style={{
