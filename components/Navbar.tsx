@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { NAV_LINKS, WA_MAIN } from "@/lib/data";
+import Image from "next/image";
+import { NAV_LINKS, WA_MAIN, PRODUCTS, slugify, formatPrice } from "@/lib/data";
+import { useWishlist, removeFromWishlist } from "@/lib/wishlist";
 
 /* ---- Minimal line icons (Miu Miu style) ---- */
 const Icon = {
@@ -35,14 +37,21 @@ const Icon = {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [wishOpen, setWishOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const { slugs, ready } = useWishlist();
+
+  const favorites = slugs
+    .map((slug) => PRODUCTS.find((p) => slugify(p.name) === slug))
+    .filter(Boolean) as (typeof PRODUCTS)[number][];
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    const lock = open || wishOpen;
+    document.body.style.overflow = lock ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [open, wishOpen]);
 
   // Hide the header on scroll-down, reveal on scroll-up (Miu Miu behaviour).
   useEffect(() => {
@@ -136,7 +145,14 @@ export function Navbar() {
             <a href="/contacto" className="hdr-icon nav-txt-only" aria-label="Contáctenos">
               Contáctenos
             </a>
-            <button className="hdr-icon" aria-label="Lista de deseos">{Icon.heart}</button>
+            <button
+              className="hdr-icon hdr-wish"
+              onClick={() => setWishOpen(true)}
+              aria-label={ready && favorites.length ? `Lista de deseos (${favorites.length})` : "Lista de deseos"}
+            >
+              {Icon.heart}
+              {ready && favorites.length > 0 && <span className="hdr-wish__count">{favorites.length}</span>}
+            </button>
             <a href={WA_MAIN} target="_blank" rel="noopener" className="hdr-icon" aria-label="Bolsa">
               {Icon.bag}
             </a>
@@ -217,6 +233,92 @@ export function Navbar() {
             Escríbenos por WhatsApp
           </a>
         </nav>
+      </div>
+
+      {/* Panel de favoritos */}
+      <div
+        onClick={() => setWishOpen(false)}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 75,
+          background: "rgba(0,0,0,.35)",
+          opacity: wishOpen ? 1 : 0,
+          pointerEvents: wishOpen ? "auto" : "none",
+          transition: "opacity .35s ease",
+        }}
+      >
+        <aside
+          onClick={(e) => e.stopPropagation()}
+          aria-label="Lista de deseos"
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: "min(420px, 90vw)",
+            background: "#fff",
+            padding: "26px clamp(20px,4vw,36px)",
+            transform: wishOpen ? "translateX(0)" : "translateX(100%)",
+            transition: "transform .4s cubic-bezier(.2,.7,.2,1)",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <button
+            className="hdr-icon"
+            onClick={() => setWishOpen(false)}
+            aria-label="Cerrar"
+            style={{ alignSelf: "flex-start", marginBottom: 22 }}
+          >
+            {Icon.close}
+            <span>Cerrar</span>
+          </button>
+
+          <div className="eyebrow" style={{ marginBottom: 18 }}>
+            Lista de deseos {favorites.length > 0 && `(${favorites.length})`}
+          </div>
+
+          {favorites.length === 0 ? (
+            <p style={{ color: "var(--ink-2)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
+              Todavía no guardaste ninguna prenda. Tocá el corazón en cualquier prenda del
+              catálogo para agregarla acá.
+            </p>
+          ) : (
+            <ul className="wish-list">
+              {favorites.map((p) => {
+                const slug = slugify(p.name);
+                return (
+                  <li key={slug}>
+                    <a href={`/producto/${slug}`} onClick={() => setWishOpen(false)}>
+                      <span className="wish-list__media">
+                        {p.img ? (
+                          <Image src={p.img} alt={p.name} fill sizes="80px" style={{ objectFit: "cover" }} />
+                        ) : null}
+                      </span>
+                      <span className="wish-list__info">
+                        <span className="wish-list__name">{p.name}</span>
+                        <span className="wish-list__price">{formatPrice(p.price)}</span>
+                      </span>
+                    </a>
+                    <button onClick={() => removeFromWishlist(slug)} aria-label={`Quitar ${p.name}`}>
+                      {Icon.close}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+
+          <a
+            href={favorites.length ? WA_MAIN : "/catalogo"}
+            {...(favorites.length ? { target: "_blank", rel: "noopener" } : {})}
+            className="btn-dark"
+            style={{ marginTop: "auto", width: "100%" }}
+          >
+            {favorites.length ? "Consultar por WhatsApp" : "Ver catálogo"}
+          </a>
+        </aside>
       </div>
     </>
   );
