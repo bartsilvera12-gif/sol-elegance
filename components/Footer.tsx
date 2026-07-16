@@ -124,7 +124,7 @@ export function Footer() {
 
       {/* Giant wordmark */}
       <div className="ft-wordmark" aria-hidden>
-        <span className="serif">Sol Elegance</span>
+        <span className="wordmark">Sol Elegance</span>
       </div>
 
       {/* Bottom bar */}

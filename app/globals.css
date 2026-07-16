@@ -144,10 +144,16 @@ body {
   padding: 0 clamp(12px,3vw,32px); margin-top: clamp(10px,2vw,24px);
   display: flex; align-items: center; justify-content: center;
 }
-.ft-wordmark .serif {
-  font-size: clamp(26px, 12vw, 190px); line-height: 1; font-weight: 500;
-  letter-spacing: clamp(1px,.35vw,5px); color: #ded7cb; white-space: nowrap;
-  text-transform: uppercase; user-select: none;
+
+/* Wordmark de marca: geométrica de trazo grueso, en negro.
+   Medido: el ancho ≈ font-size × 6.6, así que 13vw ocupa ~86% del ancho
+   (entra con aire y sin recortarse, tanto en desktop como en móvil). */
+.wordmark {
+  font-family: 'Poppins', 'Jost', system-ui, sans-serif;
+  font-weight: 700; line-height: 1;
+  letter-spacing: clamp(0px,.1vw,2px);
+  color: var(--black); white-space: nowrap; user-select: none;
+  font-size: clamp(24px, 13vw, 200px);
 }
 .ft-bottom {
   padding: 22px clamp(16px,4vw,56px) 30px; border-top: 1px solid var(--line);
@@ -223,11 +229,6 @@ body {
 /* Wordmark: "SOL ELEGANCE" son 12 caracteres, así que 12vw es el máximo que
    entra a lo ancho sin recortarse (medido: ancho ≈ font-size × 7.3). */
 .ih-footer__wordmark { text-align: center; padding: 0 clamp(12px,3vw,32px); display: flex; align-items: center; justify-content: center; }
-.ih-footer__wordmark .serif {
-  font-size: clamp(26px,12vw,190px); line-height: 1; font-weight: 500;
-  letter-spacing: clamp(1px,.35vw,5px); color: #ded7cb; white-space: nowrap;
-  text-transform: uppercase; user-select: none;
-}
 .ih-footer__bottom {
   display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between;
   padding: 16px clamp(16px,4vw,56px) clamp(18px,3vh,30px);
@@ -263,7 +264,6 @@ body {
   .ih-footer .ft-form input { font-size: 12px; padding: 9px 4px; }
   .ih-footer .ft-legal-note { font-size: 10.5px; margin-top: 8px; }
   .ih-footer .ft-social a { width: 32px; height: 32px; }
-  .ih-footer__wordmark .serif { font-size: 11vw; }
   .ih-footer__bottom { font-size: 9.5px; padding: 10px 14px 14px; gap: 4px; }
 }
 

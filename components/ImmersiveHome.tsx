@@ -114,7 +114,7 @@ function FooterSlide() {
         </div>
       </div>
 
-      <div className="ih-footer__wordmark" aria-hidden><span className="serif">Sol Elegance</span></div>
+      <div className="ih-footer__wordmark" aria-hidden><span className="wordmark">Sol Elegance</span></div>
 
       <div className="ih-footer__bottom container-x">
         <span>© 2026 Sol Elegance — Moda Femenina</span>
