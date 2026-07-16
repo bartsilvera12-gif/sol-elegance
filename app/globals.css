@@ -135,13 +135,13 @@ body {
 .ft-social a:hover { opacity: .7; }
 
 .ft-wordmark {
-  overflow: hidden; text-align: center;
-  padding: 0 12px; margin-top: clamp(10px,2vw,24px); height: clamp(72px, 15vw, 220px);
-  display: flex; align-items: flex-start; justify-content: center;
+  text-align: center;
+  padding: 0 clamp(12px,3vw,32px); margin-top: clamp(10px,2vw,24px);
+  display: flex; align-items: center; justify-content: center;
 }
 .ft-wordmark .serif {
-  font-size: clamp(64px, 20vw, 300px); line-height: .82; font-weight: 500;
-  letter-spacing: clamp(1px,.4vw,6px); color: #ece8e1; white-space: nowrap;
+  font-size: clamp(26px, 12vw, 190px); line-height: 1; font-weight: 500;
+  letter-spacing: clamp(1px,.35vw,5px); color: #ded7cb; white-space: nowrap;
   text-transform: uppercase; user-select: none;
 }
 .ft-bottom {
@@ -205,10 +205,12 @@ body {
 .ih-footer__cols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .ih-footer__cols a { color: var(--ink-2); text-decoration: none; font-size: 12.5px; }
 .ih-footer__cols a:hover { color: var(--ink); }
-.ih-footer__wordmark { overflow: hidden; text-align: center; height: clamp(60px,13vw,190px); display: flex; align-items: flex-start; justify-content: center; }
+/* Wordmark: "SOL ELEGANCE" son 12 caracteres, así que 12vw es el máximo que
+   entra a lo ancho sin recortarse (medido: ancho ≈ font-size × 7.3). */
+.ih-footer__wordmark { text-align: center; padding: 0 clamp(12px,3vw,32px); display: flex; align-items: center; justify-content: center; }
 .ih-footer__wordmark .serif {
-  font-size: clamp(56px,19vw,280px); line-height: .82; font-weight: 500;
-  letter-spacing: clamp(1px,.4vw,6px); color: #ece8e1; white-space: nowrap;
+  font-size: clamp(26px,12vw,190px); line-height: 1; font-weight: 500;
+  letter-spacing: clamp(1px,.35vw,5px); color: #ded7cb; white-space: nowrap;
   text-transform: uppercase; user-select: none;
 }
 .ih-footer__bottom {
