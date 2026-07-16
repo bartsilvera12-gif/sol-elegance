@@ -155,37 +155,7 @@ body {
   .ft-main { grid-template-columns: 1fr; }
 }
 
-/* ===== Category tiles ("Imprescindibles de la temporada") ===== */
-.cat-tiles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(10px, 1.4vw, 20px);
-}
-.cat-tile { display: block; width: 100%; text-decoration: none; }
-.cat-tile__media {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: var(--bg-soft);
-}
-.cat-tile__media img { transition: transform 1.1s cubic-bezier(.2,.7,.2,1); }
-.cat-tile:hover .cat-tile__media img { transform: scale(1.06); }
-.cat-tile__scrim {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,.5) 0%, rgba(0,0,0,.08) 34%, rgba(0,0,0,0) 60%);
-}
-.cat-tile__label {
-  position: absolute; left: 0; right: 0; bottom: clamp(16px,2vw,26px);
-  text-align: center; color: #fff;
-  font-size: clamp(14px,1.4vw,18px); letter-spacing: 2px; text-transform: uppercase; font-weight: 400;
-}
-@media (max-width: 760px) {
-  .cat-tiles { grid-template-columns: 1fr; gap: 12px; }
-  .cat-tile__media { aspect-ratio: 3 / 4; }
-}
-
-/* ===== Home carousel (HeroCarousel) — scroll-driven immersive ===== */
+/* ===== Home carousel (ImmersiveHome) — scroll-driven immersive ===== */
 .hc-immersive { position: relative; width: 100%; background: #0e0b08; }
 .hc-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 .hc-slide { position: absolute; inset: 0; will-change: transform; }
@@ -224,10 +194,6 @@ body {
   text-align: center; color: #fff; font-size: clamp(13px,1.3vw,17px);
   letter-spacing: 2px; text-transform: uppercase;
 }
-@media (max-width: 760px) {
-  .ih-mosaic__tiles { grid-template-columns: 1fr 1fr; }
-}
-
 /* Immersive home — footer slide */
 .ih-footer { height: 100%; background: #fff; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
 .ih-footer__top {
@@ -254,6 +220,30 @@ body {
 @media (max-width: 860px) {
   .ih-footer__top { grid-template-columns: 1fr; gap: 22px; }
   .ih-footer__cols { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --------- Immersive home: adaptive fallback on phones ---------
+   Placed AFTER the base slide/mosaic/footer rules so it wins the cascade.
+   On phones the scroll-driven "cover" carousel becomes a plain stacked
+   scroll (no sticky, no transforms, controls hidden) — far more robust
+   than 100vh slides + scroll-jacking on mobile. */
+@media (max-width: 760px) {
+  .hc-immersive { height: auto !important; }
+  .hc-sticky { position: static; height: auto; overflow: visible; }
+  .hc-slide {
+    position: relative; inset: auto; transform: none !important;
+    min-height: 86vh; will-change: auto;
+  }
+  .hc-arrow, .hc-bar { display: none !important; }
+
+  /* Mosaic → natural height, stacked tiles with a fixed ratio */
+  .ih-mosaic { height: auto; padding: clamp(56px,10vh,80px) 16px clamp(44px,8vh,64px); }
+  .ih-mosaic__tiles { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .ih-mtile { aspect-ratio: 3 / 4; }
+
+  /* Footer slide → grows with content, never clipped */
+  .ih-footer { height: auto; overflow: visible; justify-content: flex-start; }
+  .hc-slide:last-child { min-height: 0; }
 }
 
 .hc-caption > * { opacity: 0; animation: se-heroText .9s cubic-bezier(.2,.7,.2,1) forwards; }

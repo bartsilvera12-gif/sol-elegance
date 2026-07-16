@@ -182,6 +182,18 @@ export function ImmersiveHome() {
     const section = sectionRef.current;
     if (!section) return;
     const update = () => {
+      // On phones the layout is a plain stacked scroll (see globals.css);
+      // skip all transform work so nothing fights the natural flow.
+      if (window.innerWidth <= 760) {
+        slideRefs.current.forEach((el) => {
+          if (el) el.style.transform = "";
+        });
+        if (activeRef.current !== 0) {
+          activeRef.current = 0;
+          setActive(0);
+        }
+        return;
+      }
       const vh = window.innerHeight;
       const total = section.offsetHeight - vh;
       const top = section.getBoundingClientRect().top;

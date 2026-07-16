@@ -7,3 +7,6 @@ out/
 next-env.d.ts
 .claude/
 ChatGPT Image*.png
+
+# TypeScript build artifact
+tsconfig.tsbuildinfo

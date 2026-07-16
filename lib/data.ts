@@ -43,15 +43,6 @@ export const NAV_LINKS = [
 
 export type CatKey = "todos" | "Vestidos" | "Blusas" | "Conjuntos" | "Pantalones" | "Faldas";
 
-export const CATEGORIES: { name: string; tag: string; value: CatKey }[] = [
-  { name: "Vestidos", tag: "Elegancia diaria", value: "Vestidos" },
-  { name: "Blusas", tag: "Suaves y versátiles", value: "Blusas" },
-  { name: "Conjuntos", tag: "Look completo", value: "Conjuntos" },
-  { name: "Pantalones", tag: "Comodidad con estilo", value: "Pantalones" },
-  { name: "Faldas", tag: "Movimiento y gracia", value: "Faldas" },
-  { name: "Accesorios", tag: "El detalle final", value: "todos" },
-];
-
 export const FILTERS: { label: string; value: CatKey }[] = [
   { label: "Todos", value: "todos" },
   { label: "Vestidos", value: "Vestidos" },
@@ -126,12 +117,3 @@ export const waForProductDetail = (name: string, size?: string, color?: string) 
   msg += ". ¿Me das más info sobre disponibilidad?";
   return waLink(msg);
 };
-
-export const MARQUEE_WORDS = [
-  "Moda Femenina",
-  "Envíos a todo el país",
-  "Nueva colección",
-  "Atención personalizada por WhatsApp",
-];
-
-export const CATALOG_WORDS = ["Vestidos", "Blusas", "Conjuntos", "Pantalones", "Faldas", "Accesorios"];
