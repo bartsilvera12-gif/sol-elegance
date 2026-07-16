@@ -163,7 +163,7 @@ const SLIDES: SlideDef[] = [
         tiles={[
           { label: "Blusas", href: "/catalogo?cat=Blusas", img: "/productos/blusa-seda.jpg" },
           { label: "Pantalones", href: "/catalogo?cat=Pantalones", img: "/productos/pantalon-lino.jpg" },
-          { label: "Conjuntos", href: "/catalogo?cat=Conjuntos", img: "/campanas/conjuntos.jpg" },
+          { label: "Conjuntos", href: "/catalogo?cat=Conjuntos", img: "/categorias/conjuntos-2.jpg" },
         ]}
       />
     ),
