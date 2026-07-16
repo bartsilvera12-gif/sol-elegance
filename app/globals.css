@@ -161,8 +161,18 @@ body {
 }
 
 /* ===== Home carousel (ImmersiveHome) — scroll-driven immersive ===== */
-.hc-immersive { position: relative; width: 100%; background: #0e0b08; }
-.hc-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+/* Alto = 1 pantalla + 90 por cada transición. dvh sigue al viewport real del
+   móvil (la barra del navegador lo cambia); vh queda de fallback. */
+.hc-immersive {
+  position: relative; width: 100%; background: #0e0b08;
+  height: calc(100vh + var(--hc-steps) * 90vh);
+  height: calc(100dvh + var(--hc-steps) * 90dvh);
+}
+.hc-sticky {
+  position: sticky; top: 0; overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+}
 .hc-slide { position: absolute; inset: 0; will-change: transform; }
 .hc-slide__scrim {
   position: absolute; inset: 0;
@@ -229,28 +239,32 @@ body {
   .ih-footer__cols { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* --------- Immersive home: adaptive fallback on phones ---------
-   Placed AFTER the base slide/mosaic/footer rules so it wins the cascade.
-   On phones the scroll-driven "cover" carousel becomes a plain stacked
-   scroll (no sticky, no transforms, controls hidden) — far more robust
-   than 100vh slides + scroll-jacking on mobile. */
+/* --------- Immersive home en teléfonos ---------
+   Va DESPUÉS de las reglas base de slide/mosaic/footer para ganar la cascada.
+   Se mantiene el carrusel "cover" (se desliza con el dedo); lo que cambia es
+   que el contenido se compacta para entrar en una sola pantalla. */
 @media (max-width: 760px) {
-  .hc-immersive { height: auto !important; }
-  .hc-sticky { position: static; height: auto; overflow: visible; }
-  .hc-slide {
-    position: relative; inset: auto; transform: none !important;
-    min-height: 86vh; will-change: auto;
-  }
-  .hc-arrow, .hc-bar { display: none !important; }
+  .hc-arrow { display: none; } /* táctil: se navega deslizando */
+  .hc-caption { bottom: clamp(72px,13vh,110px); }
 
-  /* Mosaic → natural height, stacked tiles with a fixed ratio */
-  .ih-mosaic { height: auto; padding: clamp(56px,10vh,80px) 16px clamp(44px,8vh,64px); }
-  .ih-mosaic__tiles { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .ih-mtile { aspect-ratio: 3 / 4; }
+  /* Mosaico: 3 tiles apilados que reparten el alto del slide */
+  .ih-mosaic { padding: clamp(60px,11vh,88px) 14px clamp(50px,8vh,72px); }
+  .ih-mosaic__head { margin-bottom: 12px; }
+  .ih-mosaic__tiles { grid-template-columns: 1fr; grid-auto-rows: 1fr; gap: 8px; }
+  .ih-mtile { aspect-ratio: auto; } /* llena la fila, sin ratio fijo */
+  .ih-mtile__label { bottom: 10px; font-size: 12px; }
 
-  /* Footer slide → grows with content, never clipped */
-  .ih-footer { height: auto; overflow: visible; justify-content: flex-start; }
-  .hc-slide:last-child { min-height: 0; }
+  /* Footer: compacto para caber en una pantalla */
+  .ih-footer__top { padding: clamp(60px,10vh,88px) 14px 8px; gap: 16px; }
+  .ih-footer__cols { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .ih-footer__coltitle { font-size: 9.5px; margin-bottom: 7px; }
+  .ih-footer__cols ul { gap: 6px; }
+  .ih-footer__cols a, .ih-footer .ft-muted { font-size: 11.5px; }
+  .ih-footer .ft-form input { font-size: 12px; padding: 9px 4px; }
+  .ih-footer .ft-legal-note { font-size: 10.5px; margin-top: 8px; }
+  .ih-footer .ft-social a { width: 32px; height: 32px; }
+  .ih-footer__wordmark .serif { font-size: 11vw; }
+  .ih-footer__bottom { font-size: 9.5px; padding: 10px 14px 14px; gap: 4px; }
 }
 
 .hc-caption > * { opacity: 0; animation: se-heroText .9s cubic-bezier(.2,.7,.2,1) forwards; }

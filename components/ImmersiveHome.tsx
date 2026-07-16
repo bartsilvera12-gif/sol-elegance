@@ -4,7 +4,8 @@ import Image from "next/image";
 import { WA_MAIN, INSTAGRAM_URL, NAV_LINKS, TECH_PROVIDER } from "@/lib/data";
 
 const pad = (n: number) => String(n).padStart(2, "0");
-const SEG = 90; // vh of scroll distance per slide transition
+// El alto de la sección (y por tanto el scroll por slide) se define en CSS
+// con la variable --hc-steps, para poder usar dvh con fallback a vh.
 
 /* ---------- Slide building blocks ---------- */
 
@@ -174,6 +175,7 @@ const SLIDES: SlideDef[] = [
 export function ImmersiveHome() {
   const n = SLIDES.length;
   const sectionRef = useRef<HTMLElement | null>(null);
+  const stickyRef = useRef<HTMLDivElement | null>(null);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
@@ -182,19 +184,10 @@ export function ImmersiveHome() {
     const section = sectionRef.current;
     if (!section) return;
     const update = () => {
-      // On phones the layout is a plain stacked scroll (see globals.css);
-      // skip all transform work so nothing fights the natural flow.
-      if (window.innerWidth <= 760) {
-        slideRefs.current.forEach((el) => {
-          if (el) el.style.transform = "";
-        });
-        if (activeRef.current !== 0) {
-          activeRef.current = 0;
-          setActive(0);
-        }
-        return;
-      }
-      const vh = window.innerHeight;
+      // Medimos el contenedor sticky en vez de window.innerHeight: así el JS
+      // coincide siempre con la altura que fija el CSS (dvh en móvil, donde la
+      // barra del navegador cambia el viewport).
+      const vh = stickyRef.current?.offsetHeight || window.innerHeight;
       const total = section.offsetHeight - vh;
       const top = section.getBoundingClientRect().top;
       const scrolled = Math.min(Math.max(-top, 0), total);
@@ -225,7 +218,8 @@ export function ImmersiveHome() {
     const section = sectionRef.current;
     if (!section) return;
     const idx = Math.min(n - 1, Math.max(0, i));
-    const total = section.offsetHeight - window.innerHeight;
+    const vh = stickyRef.current?.offsetHeight || window.innerHeight;
+    const total = section.offsetHeight - vh;
     const y = window.scrollY + section.getBoundingClientRect().top + (idx / (n - 1)) * total;
     window.scrollTo({ top: y, behavior: "smooth" });
   };
@@ -234,8 +228,13 @@ export function ImmersiveHome() {
   const isLast = active === n - 1;
 
   return (
-    <section ref={sectionRef} className="hc-immersive" style={{ height: `calc(100vh + ${(n - 1) * SEG}vh)` }} aria-roledescription="carrusel">
-      <div className="hc hc-sticky">
+    <section
+      ref={sectionRef}
+      className="hc-immersive"
+      style={{ "--hc-steps": n - 1 } as React.CSSProperties}
+      aria-roledescription="carrusel"
+    >
+      <div ref={stickyRef} className="hc hc-sticky">
         {SLIDES.map((s, i) => (
           <div
             key={i}
